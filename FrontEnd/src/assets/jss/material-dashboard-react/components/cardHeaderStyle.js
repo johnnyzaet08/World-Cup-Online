@@ -15,7 +15,7 @@ const cardHeaderStyle = {
     borderBottom: "none",
     background: "transparent",
     zIndex: "3 !important",
-    "&$cardHeaderPlain,&$cardHeaderIcon,&$cardHeaderStats,&$warningCardHeader,&$successCardHeader,&$dangerCardHeader,&$infoCardHeader,&$primaryCardHeader,&$roseCardHeader": {
+    "&$cardHeaderPlain,&$cardHeaderImage,&$cardHeaderIcon,&$cardHeaderStats,&$warningCardHeader,&$successCardHeader,&$dangerCardHeader,&$infoCardHeader,&$primaryCardHeader,&$roseCardHeader": {
       margin: "0 15px",
       padding: "0",
       position: "relative",
@@ -51,6 +51,9 @@ const cardHeaderStyle = {
     "&$cardHeaderStats$cardHeaderIcon": {
       textAlign: "right",
     },
+    "&$cardHeaderStats$cardHeaderImage": {
+      textAlign: "right",
+    },
   },
   cardHeaderPlain: {
     marginLeft: "0px !important",
@@ -58,6 +61,9 @@ const cardHeaderStyle = {
   },
   cardHeaderStats: {
     "& $cardHeaderIcon": {
+      textAlign: "right",
+    },
+    "& $cardHeaderImage": {
       textAlign: "right",
     },
     "& h1,& h2,& h3,& h4,& h5,& h6": {
@@ -70,6 +76,25 @@ const cardHeaderStyle = {
       boxShadow: "none",
     },
     "& i,& .material-icons": {
+      width: "33px",
+      height: "33px",
+      textAlign: "center",
+      lineHeight: "33px",
+    },
+    "& svg": {
+      width: "24px",
+      height: "24px",
+      textAlign: "center",
+      lineHeight: "33px",
+      margin: "5px 4px 0px",
+    },
+  },
+  cardHeaderImage: {
+    "&$warningCardHeader,&$successCardHeader,&$dangerCardHeader,&$infoCardHeader,&$primaryCardHeader,&$roseCardHeader": {
+      background: "transparent",
+      boxShadow: "none",
+    },
+    "& i,& img": {
       width: "33px",
       height: "33px",
       textAlign: "center",
