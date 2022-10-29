@@ -12,6 +12,9 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import BasicDatePicker from "components/DatePicker/DatePicker.js";
+import MultipleDragList from "components/Multiple-list-dnd/multiple-list-dnd.js";
+import ControlledRadioButtonsGroup from "components/Radio-group/radio-group.js";
+import Dynamicform from "components/Dynamicform/Dynamicform.js";
 
 const styles = {
   cardCategoryWhite: {
@@ -77,6 +80,38 @@ export default function CreateTournament() {
                       fullWidth: true,
                     }}
                   />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                  <br></br>
+                  <ControlledRadioButtonsGroup />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={3}>
+                  <InputLabel style={{ color: "#000000" }}>
+                    <br></br>Out
+                  </InputLabel>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={5}>
+                  <InputLabel style={{ color: "#000000" }}>
+                    <br></br>In
+                  </InputLabel>
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                  <MultipleDragList />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={6}>
+                  <br></br>
+                  <InputLabel style={{ color: "#000000" }}>
+                    Enter the new stage for the tournament
+                  </InputLabel>
+                  <Dynamicform />
                 </GridItem>
               </GridContainer>
               <GridContainer>
