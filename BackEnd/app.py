@@ -17,21 +17,28 @@ def getEquiposLocal():
     local="Local"
     cursor= mysql.connection.cursor() 
     cursor.execute('''SELECT Nombre FROM equipos WHERE TIPO =%s ''',[local])
-    equiposL = cursor.fetchone()
-    stringEquiposL= equiposL[0]
+    equipos = cursor.fetchall()
+    load={}
+    load['ELocales']=[]
+    for equiposLocales in equipos:
+       load['ELocales'].append(equiposLocales)
+    
    
-    return stringEquiposL
+    return load
 #Lista
 @app.route('/getEquiposSeleccion', methods = ['GET'])
 def getEquiposSeleccion():
     sele="Seleccion"
     cursor= mysql.connection.cursor() 
     cursor.execute('''SELECT Nombre FROM equipos WHERE TIPO =%s ''',[sele])
-    equiposS = cursor.fetchone()
-    stringEquiposS= equiposS[0]
+    equipos = cursor.fetchall()
+    load={}
+    load['ESelec']=[]
+    for equiposSeleccion in equipos:
+       load['ESelec'].append(equiposSeleccion)
     
    
-    return stringEquiposS
+    return load
 
 #Aun no
 @app.route('/getJugadoresLocal', methods = ['GET'])
