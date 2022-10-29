@@ -1,5 +1,5 @@
 import React from "react";
-// @material-ui/core components
+// @material-ui components
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 // core components
@@ -11,6 +11,7 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import BasicDatePicker from "components/DatePicker/DatePicker.js";
 
 const styles = {
   cardCategoryWhite: {
@@ -41,36 +42,17 @@ export default function CreateTournament() {
         <GridItem xs={12} sm={12} md={14}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
-              <p className={classes.cardCategoryWhite}>Complete your profile</p>
+              <h4 className={classes.cardTitleWhite}>Crear Torneo</h4>
+              <p className={classes.cardCategoryWhite}>
+                Complete all the information for this new tournament
+              </p>
             </CardHeader>
             <CardBody>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={5}>
+                <GridItem xs={12} sm={12} md={12}>
                   <CustomInput
-                    labelText="Company (disabled)"
-                    id="company-disabled"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                    inputProps={{
-                      disabled: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
-                  <CustomInput
-                    labelText="Username"
-                    id="username"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Email address"
-                    id="email-address"
+                    labelText="Tournament Name"
+                    id="name"
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -79,47 +61,18 @@ export default function CreateTournament() {
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="First Name"
-                    id="first-name"
+                  <BasicDatePicker
+                    labelText="Initial Date"
+                    id="initial-date"
                     formControlProps={{
                       fullWidth: true,
                     }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="Last Name"
-                    id="last-name"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="City"
-                    id="city"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Country"
-                    id="country"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Postal Code"
-                    id="postal-code"
+                  <BasicDatePicker
+                    labelText="End Date"
+                    id="end-date"
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -128,23 +81,27 @@ export default function CreateTournament() {
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
-                  <InputLabel style={{ color: "#AAAAAA" }}>About me</InputLabel>
+                  <InputLabel style={{ color: "#000000" }}>
+                    <br></br>
+                    <br></br>
+                    Description
+                  </InputLabel>
                   <CustomInput
-                    labelText="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
-                    id="about-me"
+                    labelText="Rules, Data..."
+                    id="description"
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
                       multiline: true,
-                      rows: 5,
+                      rows: 10,
                     }}
                   />
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Update Profile</Button>
+              <Button color="primary">Create Tournament</Button>
             </CardFooter>
           </Card>
         </GridItem>

@@ -18,13 +18,13 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
+//import LibraryBooks from "@material-ui/icons/LibraryBooks";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import CreateMatch from "views/CreateMatch/CreateMatch.js";
 import CreateTournament from "views/CreateTournament/CreateTournament.js";
-import TableList from "views/TableList/TableList.js";
-import Typography from "views/Typography/Typography.js";
+//import TableList from "views/TableList/TableList.js";
+//import Typography from "views/Typography/Typography.js";
 
 const dashboardRoutes = [
   {
@@ -48,7 +48,7 @@ const dashboardRoutes = [
     component: CreateTournament,
     layout: "/admin",
   },
-  {
+  /*{
     path: "/table",
     name: "Table List",
     icon: "content_paste",
@@ -61,7 +61,7 @@ const dashboardRoutes = [
     icon: LibraryBooks,
     component: Typography,
     layout: "/admin",
-  },
+  },*/
 ];
 
 export default dashboardRoutes;

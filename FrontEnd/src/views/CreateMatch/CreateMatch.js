@@ -10,8 +10,8 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import DatePicker from "components/DatePicker/DatePicker.js";
-import TimePicker from "components/TimePicker/TimePicker.js";
+import BasicDatePicker from "components/DatePicker/DatePicker.js";
+import BasicTimePicker from "components/TimePicker/TimePicker";
 
 const styles = {
   cardCategoryWhite: {
@@ -49,11 +49,23 @@ export default function CreateMatch() {
             </CardHeader>
             <CardBody>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
-                  <DatePicker></DatePicker>
+                <GridItem xs={12} sm={12} md={6}>
+                  <BasicDatePicker
+                    labelText="Date Match"
+                    id="date-match"
+                    formControlProps={{
+                      fullWidth: true,
+                    }}
+                  />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <TimePicker></TimePicker>
+                <GridItem xs={12} sm={12} md={6}>
+                  <BasicTimePicker
+                    labelText="Time Match"
+                    id="time-match"
+                    formControlProps={{
+                      fullWidth: true,
+                    }}
+                  />
                 </GridItem>
               </GridContainer>
               <GridContainer>
@@ -77,7 +89,7 @@ export default function CreateMatch() {
                 </GridItem>
               </GridContainer>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText="First Team"
                     id="city"
@@ -86,7 +98,7 @@ export default function CreateMatch() {
                     }}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText="Second Team"
                     id="country"
@@ -95,7 +107,9 @@ export default function CreateMatch() {
                     }}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={5}>
                   <CustomInput
                     labelText="Select campus"
                     id="postal-code"
