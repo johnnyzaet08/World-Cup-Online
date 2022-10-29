@@ -21,7 +21,8 @@ import Person from "@material-ui/icons/Person";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
-import UserProfile from "views/UserProfile/UserProfile.js";
+import CreateMatch from "views/CreateMatch/CreateMatch.js";
+import CreateTournament from "views/CreateTournament/CreateTournament.js";
 import TableList from "views/TableList/TableList.js";
 import Typography from "views/Typography/Typography.js";
 
@@ -34,10 +35,17 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/user",
-    name: "User Profile",
+    path: "/creatematch",
+    name: "Create Match",
     icon: Person,
-    component: UserProfile,
+    component: CreateMatch,
+    layout: "/admin",
+  },
+  {
+    path: "/createtournament",
+    name: "Create Tournament",
+    icon: Person,
+    component: CreateTournament,
     layout: "/admin",
   },
   {
