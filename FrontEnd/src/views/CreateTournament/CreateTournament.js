@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // @material-ui components
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -38,11 +38,40 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function CreateTournament() {
+
   const classes = useStyles();
+
+  const [tName, setTName] = useState("");
+  const [initialDate, setIDate] = useState(null);
+  const [endDate, setEDate] = useState(null);
+
+  // *************************************************************
+  // ******************** HANDLE EVENTS **************************
+  const handleChange = (event) => {
+    setTName(event.target.value);
+  };
+
+  const handleIDateChange = (event) => {
+    setIDate(event);
+  };
+
+  const handleEDateChange = (event) => {
+    setEDate(event);
+  };
+
+  const handleClick = async (event) => {
+    event.preventDefault();
+
+    console.log("NAME:",tName);
+    console.log("iDATE:",initialDate);
+    console.log("eDATE:",endDate);
+  }
+
+
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={14}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Crear Torneo</h4>
@@ -59,6 +88,9 @@ export default function CreateTournament() {
                     formControlProps={{
                       fullWidth: true,
                     }}
+                    inputProps={{
+                      onChange: (event) => handleChange(event),
+                    }}
                   />
                 </GridItem>
               </GridContainer>
@@ -67,6 +99,8 @@ export default function CreateTournament() {
                   <BasicDatePicker
                     labelText="Initial Date"
                     id="initial-date"
+                    value={initialDate}
+                    onChange={(date) => handleIDateChange(date)}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -76,6 +110,8 @@ export default function CreateTournament() {
                   <BasicDatePicker
                     labelText="End Date"
                     id="end-date"
+                    value={endDate}
+                    onChange={(date) => handleEDateChange(date)}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -136,7 +172,7 @@ export default function CreateTournament() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Create Tournament</Button>
+              <Button color="primary" onClick={handleClick}>Create Tournament</Button>
             </CardFooter>
           </Card>
         </GridItem>

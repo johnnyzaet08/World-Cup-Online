@@ -17,8 +17,15 @@ const useStyles = makeStyles(styles);
 
 export default function BasicDatePicker(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(null);
-  const { formControlProps, labelText, id, error, success } = props;
+  const {
+    formControlProps,
+    value,
+    onChange,
+    labelText,
+    id,
+    error,
+    success,
+  } = props;
   return (
     <FormControl
       {...formControlProps}
@@ -27,11 +34,9 @@ export default function BasicDatePicker(props) {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           label={labelText}
-          value={value}
           id={id}
-          onChange={(newValue) => {
-            setValue(newValue);
-          }}
+          value={value}
+          onChange={onChange}
           renderInput={(params) => <TextField {...params} />}
         />
       </LocalizationProvider>
@@ -47,6 +52,8 @@ export default function BasicDatePicker(props) {
 BasicDatePicker.propTypes = {
   labelText: PropTypes.string,
   id: PropTypes.string,
+  value: PropTypes.object,
+  onChange: PropTypes.func,
   formControlProps: PropTypes.object,
   labelProps: PropTypes.object,
   error: PropTypes.bool,

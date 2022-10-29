@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Button from "components/CustomButtons/Button.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
 import { Form, Row, Col } from "react-bootstrap";
 
 const Dynamicform = () => {
   const [StageData, setStageData] = useState([{ newStage: "" }]);
-
-  const handleChange = (index, event) => {
+  const handleInputChange = (index, event) => {
     const values = [...StageData];
-    values[index].newStage = event.target.value;
+    const updatedValue = event.target.name;
+    values[index][updatedValue] = event.target.value;
     setStageData(values);
   };
-
+  const handleTest = () => {
+    const values = [...StageData];
+    console.log(values);
+  };
   const handleAddFields = () => {
     const values = [...StageData];
-    values.push({ roomType: "", roomNumber: 0, guest: 0 });
+    values.push({ newStage: "" });
     setStageData(values);
   };
 
@@ -31,13 +33,11 @@ const Dynamicform = () => {
           <Row className="mt-3" key={i}>
             <Col xs={8}>
               <Form.Group controlId="formBasicGuest">
-                <CustomInput
-                  labelText="New Stage"
-                  id="name"
-                  onChange={(event) => handleChange(i, event)}
-                  formControlProps={{
-                    fullWidth: true,
-                  }}
+                <Form.Control
+                  type="text"
+                  name="newStage"
+                  value={data.newStage}
+                  onChange={(event) => handleInputChange(i, event)}
                 />
               </Form.Group>
             </Col>
@@ -48,6 +48,9 @@ const Dynamicform = () => {
         <Col className="pt-3 d-flex justify-content-between">
           <Button color="primary" onClick={handleAddFields}>
             Add More
+          </Button>
+          <Button color="primary" onClick={handleTest}>
+            Test
           </Button>
           <Button color="primary" onClick={handleRemoveFields}>
             Remove

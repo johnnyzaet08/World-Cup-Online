@@ -13,6 +13,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import BasicDatePicker from "components/DatePicker/DatePicker.js";
 import BasicTimePicker from "components/TimePicker/TimePicker";
 import BasicSelect from "components/Select/Select";
+import axios from "axios";
 
 const styles = {
   cardCategoryWhite: {
@@ -39,26 +40,43 @@ export default function CreateMatch() {
   const classes = useStyles();
 
   const [campus, setCampus] = useState("");
-  const [Cdate, handleDateChange] = useState(new Date().toDateString());
-  const [Ctime, handleTimeChange] = useState(new Date().toTimeString());
-  const [tournament, setTournament] = useState("Default");
-  const [tournamentPhase, setTournamentPhase] = useState("Default");
-  const [firstTeam, setFirstTeam] = useState("Default");
-  const [secondTeam, setSecondTeam] = useState("Default");
+  const [date, setDate] = useState(null);
+  const [time, setTime] = useState(null);
 
   const handleChange = (event) => {
     setCampus(event.target.value);
   };
 
-  const handleClick = (event) => {
+  const handleTimeChange = (newTime) => {
+    setTime(newTime);
+  };
+
+  const handleDateChange = (newDate) => {
+    setDate(newDate);
+  };
+
+  const handleClick = async (event) => {
     event.preventDefault();
 
-    console.log("Date:", Cdate);
-    console.log("Time:", Ctime);
+    //const date =  document.getElementById("date-match").value;
+    //const time = document.getElementById("time-match").value;
+    const tournament = document.getElementById("tournamentID").innerHTML;
+
+    const tournamentPhase = document.getElementById("tournament-phase")
+      .innerHTML;
+
+    const firstTeam = document.getElementById("first-team").innerHTML;
+    const secondTeam = document.getElementById("second-team").innerHTML;
+
+    const timeMatch = document.getElementById("time-match");
+
+    console.log(timeMatch);
+    console.log("Date:", new Date(date).toLocaleDateString());
+    console.log("Time:", new Date(time).toLocaleTimeString());
     console.log("tournament:", tournament);
-    console.log("tournamentPhase:", tournament);
-    console.log("FirstTeam:", tournament);
-    console.log("SecondTeam:", tournament);
+    console.log("tournamentPhase:", tournamentPhase);
+    console.log("FirstTeam:", firstTeam);
+    console.log("SecondTeam:", secondTeam);
     console.log("Campus:", campus);
 
     const json = {
@@ -71,19 +89,35 @@ export default function CreateMatch() {
       '" Sede "': "",
     };
 
-    json.Fecha = Cdate;
-    json.Hora = Ctime;
+    json.Fecha = new Date(date).toLocaleDateString();
+    json.Hora = new Date(time).toLocaleTimeString();
     json.Torneo = tournament;
     json.Fase = tournamentPhase;
     json.Equipo1 = firstTeam;
     json.Equipo2 = secondTeam;
     json.Sede = campus;
+
+    console.log(json);
+
+    const headers = {
+      "Access-Control-Allow-Origin": "*",
+
+      "Access-Control-Allow-Headers":
+        "Origin, X-Requested-With, Content-Type, Accept",
+
+      "Content-Type": "application/json",
+    };
+
+    await axios
+      .post("http://localhost:5000/createPartidos", json, { headers })
+      .then((response) => console.log(response))
+      .catch((error) => console.error("There was an error!", error));
   };
 
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={14}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Create Match</h4>
@@ -97,10 +131,8 @@ export default function CreateMatch() {
                   <BasicDatePicker
                     labelText="Date Match"
                     id="date-match"
-                    value={Cdate}
-                    handleDateChange={(date) =>
-                      handleDateChange(date.toDateString())
-                    }
+                    value={date}
+                    onChange={(newDate) => handleDateChange(newDate)}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -110,12 +142,10 @@ export default function CreateMatch() {
                   <BasicTimePicker
                     labelText="Time Match"
                     id="time-match"
-                    value={Ctime}
+                    value={time}
+                    onChange={(newTime) => handleTimeChange(newTime)}
                     formControlProps={{
                       fullWidth: true,
-                    }}
-                    inputProps={{
-                      onChange: (time) => handleTimeChange(time.toDateString()),
                     }}
                   />
                 </GridItem>
@@ -124,28 +154,18 @@ export default function CreateMatch() {
                 <GridItem xs={12} sm={12} md={6}>
                   <BasicSelect
                     labelText="Tournament Select"
-                    id="TournamentID"
-                    value={tournament}
+                    id="tournamentID"
                     formControlProps={{
                       fullWidth: true,
-                    }}
-                    onOptionSelect={(newValue) => {
-                      console.log("Detected Tournament");
-                      setTournament(newValue);
                     }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <BasicSelect
                     labelText="Select tournament phase"
-                    id="last-name"
-                    value={tournamentPhase}
+                    id="tournament-phase"
                     formControlProps={{
                       fullWidth: true,
-                    }}
-                    onOptionSelect={(newValue) => {
-                      console.log("Detected Tournament Phase");
-                      setTournamentPhase(newValue);
                     }}
                   />
                 </GridItem>
@@ -155,28 +175,18 @@ export default function CreateMatch() {
                 <GridItem xs={12} sm={12} md={6}>
                   <BasicSelect
                     labelText="First Team"
-                    id="city"
-                    value={firstTeam}
+                    id="first-team"
                     formControlProps={{
                       fullWidth: true,
-                    }}
-                    onOptionSelect={(newValue) => {
-                      console.log("Detected First Team");
-                      setFirstTeam(newValue);
                     }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <BasicSelect
                     labelText="Second Team"
-                    id="country"
-                    value={secondTeam}
+                    id="second-team"
                     formControlProps={{
                       fullWidth: true,
-                    }}
-                    onOptionSelect={(newValue) => {
-                      console.log("Detected Second Team");
-                      setSecondTeam(newValue);
                     }}
                   />
                 </GridItem>
@@ -185,8 +195,7 @@ export default function CreateMatch() {
                 <GridItem xs={12} sm={12} md={5}>
                   <CustomInput
                     labelText="Select campus"
-                    id="postal-code"
-                    value={campus}
+                    id="campusId"
                     formControlProps={{
                       fullWidth: true,
                     }}

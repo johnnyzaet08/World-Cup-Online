@@ -17,29 +17,48 @@ const useStyles = makeStyles(styles);
 
 export default function BasicTimePicker(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(null);
-  const { formControlProps, labelText, id, error, success } = props;
+  const {
+    formControlProps,
+    value,
+    labelText,
+    id,
+    inputProps,
+    error,
+    success,
+    onChange,
+  } = props;
+  let newInputProps = {
+    maxLength:
+      inputProps && inputProps.maxLength ? inputProps.maxLength : undefined,
+    minLength:
+      inputProps && inputProps.minLength ? inputProps.minLength : undefined,
+    step: inputProps && inputProps.step ? inputProps.step : undefined,
+  };
   return (
     <FormControl
       {...formControlProps}
       className={formControlProps.className + " " + classes.formControl}
     >
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <TimePicker
-          label={labelText}
-          value={value}
-          id={id}
-          onChange={(newValue) => {
-            setValue(newValue);
-          }}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </LocalizationProvider>
-      {error ? (
-        <Clear className={classes.feedback + " " + classes.labelRootError} />
-      ) : success ? (
-        <Check className={classes.feedback + " " + classes.labelRootSuccess} />
-      ) : null}
+      <FormControl>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <TimePicker
+            label={labelText}
+            id={id}
+            value={value}
+            onChange={onChange}
+            {...inputProps}
+            inputProps={newInputProps}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        {error ? (
+          <Clear className={classes.feedback + " " + classes.labelRootError} />
+        ) : success ? (
+          <Check
+            className={classes.feedback + " " + classes.labelRootSuccess}
+          />
+        ) : null}
+      </FormControl>
     </FormControl>
   );
 }
@@ -47,8 +66,11 @@ export default function BasicTimePicker(props) {
 BasicTimePicker.propTypes = {
   labelText: PropTypes.string,
   id: PropTypes.string,
+  value: PropTypes.object,
+  onChange: PropTypes.func,
   formControlProps: PropTypes.object,
   labelProps: PropTypes.object,
+  inputProps: PropTypes.object,
   error: PropTypes.bool,
   success: PropTypes.bool,
 };
