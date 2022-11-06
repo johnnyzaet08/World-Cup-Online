@@ -14,27 +14,36 @@ import Button from "components/CustomButtons/Button.js";
 import avatar from "assets/img/copa.png";
 
 export default function Dashboard() {
+  const Description = ["Torneo 1", "Torneo 2", "Torneo 3", "Torneo 4", "Torneo 5","Torneo 6"];
+  const Index = ["ID1","ID2","ID3","ID4","ID5","ID6"];
+  const handleInputChange = (i) => {
+    console.log(Index[i]);
+  }
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="warning" stats icon>
-              <CardImages profile>
-                <img src={avatar} alt="avatar" />
-              </CardImages>
-            </CardHeader>
-            <cardBody>
-              <h3>Information</h3>
-            </cardBody>
-            <CardFooter>
-              <Button color="primary">View Tournament</Button>
-            </CardFooter>
-            <CardFooter>
-              <Button color="primary">Add Match</Button>
-            </CardFooter>
-          </Card>
-        </GridItem>
+      {Description.map((data,i) =>{
+        return(
+          <GridItem xs={12} sm={6} md={3} key={i}>
+            <Card>
+              <CardHeader color="warning" stats icon>
+                <CardImages profile>
+                  <img src={avatar} alt="avatar" />
+                </CardImages>
+              </CardHeader>
+              <cardBody>
+                <h3>{data}</h3>
+              </cardBody>
+              <CardFooter>
+                <Button color="primary" onClick={(event) => handleInputChange(i,event)}>View Tournament</Button>
+              </CardFooter>
+              <CardFooter>
+                <Button color="primary">Add Match</Button>
+              </CardFooter>
+            </Card>
+          </GridItem>
+        );
+      })}
       </GridContainer>
     </div>
   );
