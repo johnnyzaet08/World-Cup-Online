@@ -43,6 +43,27 @@ export default function CreateMatch() {
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
 
+  const options1 = [
+    {
+      value: "x",
+      text: "x",
+    },
+    {
+      value: "y",
+      text: "y",
+    },
+  ]
+  const options2 = [
+    {
+      value: "t",
+      text: "t",
+    },
+    {
+      value: "z",
+      text: "z",
+    },
+  ]
+
   const handleChange = (event) => {
     setCampus(event.target.value);
   };
@@ -155,6 +176,7 @@ export default function CreateMatch() {
                   <BasicSelect
                     labelText="Tournament Select"
                     id="tournamentID"
+                    options={options1}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -164,6 +186,7 @@ export default function CreateMatch() {
                   <BasicSelect
                     labelText="Select tournament phase"
                     id="tournament-phase"
+                    options={options2}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -176,6 +199,7 @@ export default function CreateMatch() {
                   <BasicSelect
                     labelText="First Team"
                     id="first-team"
+                    options={options1}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -185,6 +209,7 @@ export default function CreateMatch() {
                   <BasicSelect
                     labelText="Second Team"
                     id="second-team"
+                    options={options2}
                     formControlProps={{
                       fullWidth: true,
                     }}

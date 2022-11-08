@@ -1,8 +1,8 @@
 import * as React from "react";
 import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,10 +16,11 @@ const useStyles = makeStyles(styles);
 
 export default function BasicSelect(props) {
   const classes = useStyles();
-  const [info, setAge] = React.useState("");
-  const { formControlProps, labelText, id, error, success } = props;
+  const [value, setValue] = React.useState("");
+  const { formControlProps, labelText, options, id, error, success } = props;
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setValue(event.target.value);
+    console.log(event.target.value);
   };
 
   return (
@@ -32,13 +33,13 @@ export default function BasicSelect(props) {
         <Select
           labelId="demo-simple-select-label"
           id={id}
-          value={info}
+          value={value}
           label={labelText}
           onChange={handleChange}
         >
-          <MenuItem value="X">X</MenuItem>
-          <MenuItem value="Y">Y</MenuItem>
-          <MenuItem value="Z">Z</MenuItem>
+          {options.map((option, index) => {
+            return <MenuItem value={option.value} key={index}> {option.text} </MenuItem>
+          })}
         </Select>
       </FormControl>
       {error ? (
@@ -53,6 +54,7 @@ export default function BasicSelect(props) {
 BasicSelect.propTypes = {
   labelText: PropTypes.string,
   id: PropTypes.string,
+  options: PropTypes.arrayOf( PropTypes.object ),
   formControlProps: PropTypes.object,
   labelProps: PropTypes.object,
   error: PropTypes.bool,
