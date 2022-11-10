@@ -3,13 +3,16 @@ import {
   transition,
   container,
 } from "assets/jss/material-dashboard-react.js";
-
 const appStyle = (theme) => ({
+  containerCenter: {
+    position: "center",
+  },  
   wrapper: {
     position: "relative",
     top: "0",
     height: "100vh",
   },
+  
   mainPanel: {
     [theme.breakpoints.up("md")]: {
       width: `calc(100% - ${drawerWidth}px)`,

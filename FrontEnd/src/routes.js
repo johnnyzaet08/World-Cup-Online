@@ -3,14 +3,17 @@ import Dashboard from "@material-ui/icons/Dashboard";
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 //import LibraryBooks from "@material-ui/icons/LibraryBooks";
+//import Register from "@material-ui/icons/GroupAdd";
+import Login from "@material-ui/icons/LockOpen";
 
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import CreateMatch from "views/CreateMatch/CreateMatch.js";
 import CreateTournament from "views/CreateTournament/CreateTournament.js";
-import ViewTournament from "views/ViewTournament/ViewTournament";
-//import TableList from "views/TableList/TableList.js";
-//import Typography from "views/Typography/Typography.js";
+import ViewTournament from "views/ViewTournament/ViewTournament.js";
+import LoginPage from "views/LoginPage/LoginPage.js";
+import SignUp from "views/SignUp/Signup.js";
+
 
 const dashboardRoutes = [
   {
@@ -43,22 +46,24 @@ const dashboardRoutes = [
     icon: EmojiEventsIcon,
     component: ViewTournament,
     layout: "/admin",
-    dashboard: false,
-  },
-  /*{
-    path: "/table",
-    name: "Table List",
-    icon: "content_paste",
-    component: TableList,
-    layout: "/admin",
+    dashboard: true,
   },
   {
-    path: "/typography",
-    name: "Typography",
-    icon: LibraryBooks,
-    component: Typography,
-    layout: "/admin",
-  },*/
+    path: "/login-page",
+    name: "Log in",
+    icon: Login,
+    component: LoginPage,
+    layout: "/auth",
+    dashboard: false,
+  },
+  {
+    path: "/signup-page",
+    name: "Sign up",
+    icon: Login,
+    component: SignUp,
+    layout: "/auth",
+    dashboard: false,
+  },
 ];
 
 export default dashboardRoutes;

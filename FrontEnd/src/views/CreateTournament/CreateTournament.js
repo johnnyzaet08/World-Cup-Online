@@ -85,6 +85,7 @@ export default function CreateTournament() {
                   <CustomInput
                     labelText="Tournament Name"
                     id="name"
+                    type="text"
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -160,6 +161,7 @@ export default function CreateTournament() {
                   <CustomInput
                     labelText="Rules, Data..."
                     id="description"
+                    type="text"
                     formControlProps={{
                       fullWidth: true,
                     }}
