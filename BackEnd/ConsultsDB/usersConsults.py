@@ -21,10 +21,10 @@ def createUserDB(request):
 
     return "Done"
 
-def getUserLoginDBUser(username):
+def getUserLoginDBUser(username, password):
 
     cursor= mysql.connection.cursor() 
-    cursor.execute('''SELECT * FROM users where username=%s''',[username])
+    cursor.execute('''SELECT * FROM users where username=%s and password=%s''',[username, password])
     user = cursor.fetchone()
     return user
 

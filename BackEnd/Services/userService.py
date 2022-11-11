@@ -29,15 +29,18 @@ Service complete
 """
 @app.route('/getUserLogin/<username>,<password>', methods = ['GET'])
 def getUserLogin(username, password):
-
-    user=getUserLoginDBUser(username)
-    passw=getUserLoginDBPass(password)
-    
-    if passw and user:
+    print(username, password)
+    user=getUserLoginDBUser(username,password)
+    userActive={}
+    if user:
         load = "Encontrado"
-    elif user:
-        load="Contraseña incorrecta"
+        for userIn in user:
+            userActive['isAdmin']=userIn
+        
+        userActive['Username']=username
     else:
-        load ="Usuario no encontrado"
-
-    return load
+        load ="Datos incorrectos"
+    userActive['Validate']=load
+    
+    print(userActive)
+    return userActive 

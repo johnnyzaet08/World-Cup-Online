@@ -16,6 +16,7 @@ export default function LoginPage() {
   const history = useHistory();
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
+
   
   const handleChangeUser = (event) => {
     setUser(event.target.value);
@@ -34,30 +35,37 @@ export default function LoginPage() {
     
     json.Password = password;
     json.Username = user;
-
-    let validate="True"
-
+    let valid='False'
+    let userTemp=''
+    let isAdminTemp=''
     await axios
       .get(`http://localhost:5000/getUserLogin/${json.Username},${json.Password}`)
       .then((response) => {
-        if (response.data == "Encontrado"){
-            validate="True"
-        }if(response.data == "Contraseña incorrecta"){
-            validate="Incorrecta"
+        let temp = response.data.Validate;
+
+        if (temp == "Encontrado"){
+            valid="True"
+            userTemp=response.data.Username
+            if(response.data.isAdmin=='True'){
+              isAdminTemp='admin'
+            }else{
+              isAdminTemp='user'
+            }
+        }if(temp == "Datos incorrectos"){
+            valid="False"
         }})
       .catch((error) => console.error("There was an error!", error));
-      
-    if (validate=="True"){
+    
+    
+    if (valid=="True"){
+
       sessionStorage.setItem("Verified", true);
-      sessionStorage.setItem("User", user);
-      sessionStorage.setItem("Type", "admin");
+      sessionStorage.setItem("User", userTemp);
+      sessionStorage.setItem("Type", isAdminTemp);
       history.push("/admin/dashboard");
     }
-    if (validate=="Incorrecta"){
-        alert("Su contraseña es incorrecta")
-    }
-    if(validate=="False"){
-      alert("Usuario no encontrado")
+    if (valid=="False"){
+        alert("Datos incorrectos, por favor intentelo nuevamente")
     }
     
     
