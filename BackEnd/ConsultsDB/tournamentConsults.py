@@ -4,22 +4,35 @@ mysql=MYSQL
 
 def createTournamentsDB(request):
 
-    nombre= request.json['Nombre']
-    fechaInicio = request.json['FechaInicio']
-    fechaFinal= request.json['FechaFinal']
-    tipoTorneo= request.json['Tipo']
-    equipos=request.json['Equipos']
-    fases=request.json['Fases']
-    descripcion=request.json['Descripcion']
+    _id= request.json['_id']
+    name = request.json['name']
+    startDate = request.json['startDate']
+    endDate= request.json['endDate']
+    description= request.json['description']
+    teams=request.json['teams']
+    fases=request.json['fases']
 
     cursor= mysql.connection.cursor()
-    
-    cursor.execute('''INSERT INTO torneos VALUES(%s,%s,%s,%s,%s,%s,%s)''',(nombre,fechaInicio,fechaFinal,tipoTorneo,equipos,fases,descripcion))
+    cursor.execute('''INSERT INTO tournament VALUES(%s,%s,%s,%s,%s)''',(_id,name,startDate,endDate,description))
     mysql.connection.commit()
     cursor.close()
+    x=2
+    for teamsinsert in teams:
+        print(teamsinsert)
+        cursor= mysql.connection.cursor()
+        cursor.execute('''INSERT INTO teamstournament VALUES(%s,%s)''',(_id,teamsinsert))
+        mysql.connection.commit()
+        cursor.close()
 
+    for fasesinsert in fases:
+        print(fasesinsert)
+        cursor= mysql.connection.cursor()
+        cursor.execute('''INSERT INTO fasestournament VALUES(%s,%s)''',(_id,fasesinsert))
+        mysql.connection.commit()
+        cursor.close()
     return "Done"
-
+    
+    
 def getTournaments():
 
     cursor= mysql.connection.cursor() 

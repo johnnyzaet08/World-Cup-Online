@@ -48,14 +48,13 @@ Service complete
 @app.route('/createTournaments', methods = ['POST'])
 def createTournaments():
 
-    nombre= request.json['Nombre']
-    fechaInicio = request.json['FechaInicio']
-    fechaFinal= request.json['FechaFinal']
-    tipoTorneo= request.json['Tipo']
-    equipos=request.json['Equipos']
-    fases=request.json['Fases']
-    descripcion=request.json['Descripcion']
-
+    _id= request.json['_id']
+    name = request.json['name']
+    startDate = request.json['startDate']
+    endDate= request.json['endDate']
+    description= request.json['description']
+    teams=request.json['teams']
+    fases=request.json['fases']
     createTournamentsDB(request)
 
     return "Done"
