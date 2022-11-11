@@ -8,10 +8,11 @@ def playersFromLocal(team1,team2):
     cursor.execute('''SELECT * FROM players WHERE localTeam=%s or localTeam=%s''',[team1,team2])
     players = cursor.fetchall()
     load={}
-    load['Players']=[]
+    i=0
 
     for playersIn in players:
-        load['Players'].append(playersIn)
+        load[i]=playersIn
+        i=i+1
 
     return load
 
@@ -21,9 +22,8 @@ def playersFromSelec(team1,team2):
     cursor.execute('''SELECT * FROM players WHERE selecTeam=%s or selecTeam=%s''',[team1,team2])
     players = cursor.fetchall()
     load={}
-    load['Players']=[]
-
+    i=0
     for playersIn in players:
-        load['Players'].append(playersIn)
-
+        load[i]=playersIn
+        i=i+1
     return load

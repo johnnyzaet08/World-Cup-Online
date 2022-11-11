@@ -26,16 +26,16 @@ def createMatchDB(request):
     return "Done"
 
 def getMatchsDB(idTournament):
-    x=1421
+    
     print(idTournament)
     cursor= mysql.connection.cursor() 
     cursor.execute('''SELECT * FROM matchs WHERE _idTournament=%s''',[str(idTournament)])
     tournament = cursor.fetchall()
     print(tournament)
     load={}
-    load['Tournament']=[]
-
+    i=0
     for tournamentins in tournament:
-        load['Tournament'].append(tournamentins)
+        load[i]=tournamentins
+        i=i+1
 
     return load

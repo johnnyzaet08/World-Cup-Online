@@ -41,7 +41,7 @@ def getTournaments():
     load['Tournaments']=[]
 
     for torneoss in torneos:
-        load['Tournaments'].append(torneoss)
+        load['Tournaments'].append(torneoss[0])
 
     return load
 
@@ -53,7 +53,7 @@ def getFase(id):
     load={}
     load['Fases']=[]
     for faseins in fase:
-       load['Fases'].append(faseins)
+       load['Fases'].append(faseins[0])
     return load
 
 def getTeams(id):
@@ -64,7 +64,7 @@ def getTeams(id):
     load={}
     load['Teams']=[]
     for equiposOby in equipos:
-       load['Teams'].append(equiposOby)
+       load['Teams'].append(equiposOby[0])
     
    
     return load

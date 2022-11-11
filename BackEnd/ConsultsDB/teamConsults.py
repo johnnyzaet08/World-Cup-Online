@@ -12,7 +12,7 @@ def getSelections():
     load={}
     load['TSelec']=[]
     for selecTeams in teams:
-       load['TSelec'].append(selecTeams)
+       load['TSelec'].append(selecTeams[0])
     
    
     return load
@@ -26,7 +26,7 @@ def getLocals():
     load={}
     load['ELocal']=[]
     for localTeams in teams:
-       load['ELocal'].append(localTeams)
+       load['ELocal'].append(localTeams[0])
     
    
     return load
