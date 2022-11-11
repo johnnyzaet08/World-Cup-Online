@@ -2,11 +2,15 @@ import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+//import { Switch, Route } from "react-router-dom";
+//import routes from "routes.js";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
+import CardFooter from "components/Card/CardFooter.js";
+import { container } from "assets/jss/material-dashboard-react.js";
 
 const styles = {
   cardCategoryWhite: {
@@ -36,7 +40,33 @@ const styles = {
       lineHeight: "1",
     },
   },
+  content: {
+    marginTop: "20px",
+    padding: "30px 15px",
+    minHeight: "calc(100vh - 123px)",
+  },
+  container,
+  map: {
+    marginTop: "20px",
+  },
 };
+
+/*const switchRoutes = (
+  <Switch>
+    {routes.map((prop, key) => {
+      if (prop.layout === "/admin") {
+        return (
+          <Route
+            path={prop.layout + prop.path}
+            component={prop.component}
+            key={key}
+          />
+        );
+      }
+      return null;
+    })}
+  </Switch>
+);*/
 
 const useStyles = makeStyles(styles);
 
@@ -54,8 +84,14 @@ export default function ViewTournament() {
               Here is a subtitle for this table
             </p>
           </CardHeader>
+          <CardFooter>
+            <p className={classes.cardCategoryWhite}>
+              Hola muchachones
+            </p>
+          </CardFooter>
         </Card>
       </GridItem>
+
     </GridContainer>
   );
 }
