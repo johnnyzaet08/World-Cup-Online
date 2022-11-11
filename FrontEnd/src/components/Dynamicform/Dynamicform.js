@@ -5,6 +5,7 @@ import { Form, Row, Col } from "react-bootstrap";
 
 const Dynamicform = () => {
   const [StageData, setStageData] = useState([{ newStage: "" }]);
+  
   const handleInputChange = (index, event) => {
     const values = [...StageData];
     const updatedValue = event.target.name;

@@ -18,7 +18,7 @@ const cardHeaderStyle = {
     "&$cardHeaderPlain,&$cardHeaderImage,&$cardHeaderIcon,&$cardHeaderStats,&$warningCardHeader,&$successCardHeader,&$dangerCardHeader,&$infoCardHeader,&$primaryCardHeader,&$roseCardHeader": {
       margin: "0 15px",
       padding: "0",
-      position: "relative",
+      position: "center",
       color: whiteColor,
     },
     "&:first-child": {
