@@ -1,72 +1,103 @@
-import React from "react";
-import Avatar from '@mui/material/Avatar';
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Login from "@material-ui/icons/LockOpen";
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import CustomInput from "components/CustomInput/CustomInput.js";
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 
-export default function SignUp() {
+import GridItem from "components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer.js";
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
+import CardFooter from "components/Card/CardFooter.js";
+import CardHeader from "components/Card/CardHeader.js";
+import Link from '@mui/material/Link';
+import axios from "axios";
+
+export default function LoginPage() {
+  //const history = useHistory();
+  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   
-  const history = useHistory();
-  const handleClick = () => {
-    console.log("XD");
-    history.push("/admin/dashboard");
+  const handleChangeUser = (event) => {
+    setUser(event.target.value);
+  };
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+  };
+  
+  const handleClick = async (event) => {
+    event.preventDefault();
+    const json = {
+      '" Email "': "",
+      '" Username "': "",
+    };
+    
+    json.Email = email;
+    json.Username = user;
+    console.log(json);
+
+    const headers = {
+      "Access-Control-Allow-Origin": "*",
+
+      "Access-Control-Allow-Headers":
+        "Origin, X-Requested-With, Content-Type, Accept",
+
+      "Content-Type": "application/json",
+    };
+
+    await axios
+      .get("http://localhost:5000/getUserLogin/<username>,<password>", json, { headers })
+      .then((response) => console.log(response))
+      .catch((error) => console.error("There was an error!", error));
+
+    //history.push("/admin/dashboard");
   };
 
+
+
+
   return (
-  <Container component="main" maxWidth="xs">
-    <Box
-      sx={{
-        marginTop: "auto",
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}>
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <Login/>
-        </Avatar>
-        <Typography component="h1" variant="h5">
-            LogIn
-        </Typography>
-        <Box component="form" noValidate sx={{ mt: 1 }}>
-          <CustomInput
-          labelText="Username"
-          id="username"
-          type="text"
-          formControlProps={{
-              fullWidth: true,
-          }}
-          />
-          <CustomInput
-          labelText="Email address"
-          id="email-address"
-          type="email"
-          formControlProps={{
-              fullWidth: true,
-          }}
-          />
-          <Button
-          type="submit"
-          fullWidth
-          onClick={handleClick}
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}>
-          LogIn
-          </Button>
-        </Box>
-        <Grid container>
-          <Grid item>
-            <Link href="/auth/signup-page" variant="body2">
+  <GridContainer alignItems={"center"} justify={"center"}>
+    <GridItem xs={6} md={6}>
+      <Card>
+        <CardHeader color="primary">
+          <h4>Login</h4>
+        </CardHeader>
+        <CardBody>
+          <GridContainer alignItems={"center"} justify={"center"}>
+            <GridItem xs={6} md={6}>
+              <CustomInput
+                labelText="Email address"
+                id="email-id"
+                type="email"
+                formControlProps={{
+                  fullWidth: true,
+                }}
+                inputProps={{
+                  onChange: (event) => handleChangeUser(event),
+                }}
+              />
+              <CustomInput
+                labelText="Username"
+                type="text"
+                id="username-id"
+                formControlProps={{
+                  fullWidth: true,
+                }}
+                inputProps={{
+                  onChange: (event) => handleChangeEmail(event),
+                }}
+              />
+            </GridItem>
+          </GridContainer>
+        </CardBody>
+        <CardFooter xs={6} md={6}>
+          <Button color="primary"  onClick={handleClick}> Login </Button>
+          <Link href="/auth/signup-page" variant="body2">
               {"Don't have an account? Sign Up"}
-            </Link>
-          </Grid>
-        </Grid>
-    </Box>
-  </Container>
+          </Link>
+        </CardFooter>
+      </Card>
+    </GridItem>
+  </GridContainer>
   );
 }
