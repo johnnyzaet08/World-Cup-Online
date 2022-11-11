@@ -30,10 +30,14 @@ Service complete
 @app.route('/getUserLogin/<username>,<password>', methods = ['GET'])
 def getUserLogin(username, password):
 
-    user=getUserLoginDB(username, password)
-    load={}
-    load['UserActive']=[]
-    for userjson in user:
-        load['UserActive'].append(userjson)
+    user=getUserLoginDBUser(username)
+    passw=getUserLoginDBPass(password)
+    
+    if passw and user:
+        load = "Encontrado"
+    elif user:
+        load="Contraseña incorrecta"
+    else:
+        load ="Usuario no encontrado"
 
     return load

@@ -41,13 +41,23 @@ export default function LoginPage() {
     await axios
       .get(`http://localhost:5000/getUserLogin/${json.Username},${json.Password}`)
       .then((response) => {
-        if (response){
+        console.log(response)
+        if (response.data=="Encontrado"){
             validate="True"
+        }if(response.data =="Contraseña incorrecta"){
+            validate="Incorrecta"
         }})
       .catch((error) => console.error("There was an error!", error));
       console.log(validate)
     if (validate=="True"){
+
       history.push("/admin/dashboard");
+    }
+    if (validate=="Incorrecta"){
+        alert("Su contraseña es incorrecta")
+    }
+    if(validate=="False"){
+      alert("Usuario no encontrado")
     }
     
     

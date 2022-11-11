@@ -204,11 +204,47 @@ const getLocalTeams = () => {
       "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
       'Content-Type': 'application/json'
     }
-
-    await axios.post('http://localhost:5000/createTournaments', json, { headers })
-    .then(response => console.log(response))
-    .catch(error => console.error('There was an error!', error));
-  }
+    
+    let validatePos="True"
+    if(json.name==""){
+      validatePos="False"
+        alert("El nombre del torneo es obligatorio por favor ingrese un nombre de torneo")
+        
+    }if(json.startDate=="31/12/1969" & json.endDate=="31/12/1969" ){
+      validatePos="False"
+      alert("Debe seleccionar las fechas del torneo")
+          
+    }if(json.startDate>json.endDate){
+      validatePos="False"
+      alert("La fecha de inicio no puede ser mayor a la fecha de finalización")
+      
+}   if(tournamentTeams.length<2){
+  validatePos="False"
+      alert("El torneo debe contar con mínimo 2 equipos")
+          
+    }if(tPhases[0]==''){
+      validatePos="False"
+      alert("Debe agregar minímo una fase para el torneo")
+          
+    }if(validatePos=="True"){
+      await axios.post('http://localhost:5000/createTournaments', json, { headers })
+        .then(response =>{
+        if(response.data=="Done"){
+            alert("Torneo creado con éxito")
+            setLoading(true);
+            
+            setLoading(false);
+            setEDate(null)
+            setIDate(null)
+            setTournamentPhase([{ newStage: "" }])
+            
+            
+        }
+          } )
+      .catch(error => console.error('There was an error!', error));
+    }
+      }
+      
 
   if (isLoading) {
     return <div className="CreateTournament">Loading...</div>;

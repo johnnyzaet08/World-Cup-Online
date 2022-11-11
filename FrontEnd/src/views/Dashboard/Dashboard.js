@@ -51,7 +51,6 @@ export default function Dashboard() {
                 });
     }
   
-
   const Description = tournaments;
   const Index = tournamentsID;
   const handleInputChange = (i) => {
@@ -64,7 +63,7 @@ export default function Dashboard() {
     return <div className="CreateTournament">Loading...</div>;
   }
   return (
-    <div>|
+    <div>
       <GridContainer>
       {Description.map((data,i) =>{
         return(
