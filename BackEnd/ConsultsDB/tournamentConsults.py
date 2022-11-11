@@ -16,7 +16,7 @@ def createTournamentsDB(request):
     cursor.execute('''INSERT INTO tournament VALUES(%s,%s,%s,%s,%s)''',(_id,name,startDate,endDate,description))
     mysql.connection.commit()
     cursor.close()
-    x=2
+
     for teamsinsert in teams:
         print(teamsinsert)
         cursor= mysql.connection.cursor()
@@ -32,38 +32,39 @@ def createTournamentsDB(request):
         cursor.close()
     return "Done"
     
-    
 def getTournaments():
 
     cursor= mysql.connection.cursor() 
-    cursor.execute('''SELECT Nombre FROM torneos ''')
+    cursor.execute('''SELECT name FROM tournament ''')
     torneos = cursor.fetchall()
     load={}
-    load['Torneos']=[]
+    load['Tournaments']=[]
 
     for torneoss in torneos:
-        load['Torneos'].append(torneoss)
+        load['Tournaments'].append(torneoss)
 
     return load
 
-def getFase(name):
+def getFase(id):
 
     cursor= mysql.connection.cursor() 
-    cursor.execute('''SELECT Fases FROM torneos where Nombre=%s''',[name])
-    fase = cursor.fetchone()
-    stringFase= fase[0]
-    
-    return stringFase
+    cursor.execute('''SELECT fase FROM fasestournament where _idTournament=%s''',[id])
+    fase = cursor.fetchall()
+    load={}
+    load['Fases']=[]
+    for faseins in fase:
+       load['Fases'].append(faseins)
+    return load
 
-def getTeams(name):
+def getTeams(id):
 
     cursor= mysql.connection.cursor()
-    cursor.execute('''SELECT Equipos FROM torneos where Nombre=%s''',[name])
+    cursor.execute('''SELECT team FROM teamstournament where _idTournament=%s''',[id])
     equipos = cursor.fetchall()
     load={}
-    load['Equipos']=[]
+    load['Teams']=[]
     for equiposOby in equipos:
-       load['Equipos'].append(equiposOby)
+       load['Teams'].append(equiposOby)
     
    
     return load

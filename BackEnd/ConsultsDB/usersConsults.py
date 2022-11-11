@@ -21,10 +21,8 @@ def createUserDB(request):
 
     return "Done"
 
-def getUserLoginDB(request):
+def getUserLoginDB(username, password):
 
-    username= request.json['Username']
-    password= request.json['Password']
     cursor= mysql.connection.cursor() 
     cursor.execute('''SELECT * FROM users where username=%s AND password=%s''',[username, password])
     user = cursor.fetchone()

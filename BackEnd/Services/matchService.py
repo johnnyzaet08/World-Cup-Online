@@ -9,8 +9,7 @@ def createMatch():
 
     return Match
 
-@app.route('/getMatchs', methods = ['GET'])
-def getMatschs():
-    tournament=request.json['Torneo']
-    matchs=getMatchsDB(tournament)
+@app.route('/getMatchs/<idTournament>', methods = ['GET'])
+def getMatschs(idTournament):
+    matchs=getMatchsDB(idTournament)
     return matchs

@@ -27,17 +27,15 @@ def createUser():
 Service complete
 
 """
-@app.route('/getUserLogin', methods = ['GET'])
-def getUserLogin():
+@app.route('/getUserLogin/<username>,<password>', methods = ['GET'])
+def getUserLogin(username, password):
 
-    username= request.json['Username']
-    password= request.json['Password']
-    user=getUserLoginDB(request)
+    user=getUserLoginDB(username, password)
 
     load={}
     load['UserActive']=[]
 
     for userjson in user:
         load['UserActive'].append(userjson)
-        
+
     return load

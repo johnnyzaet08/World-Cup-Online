@@ -3,11 +3,9 @@ from ConsultsDB.playersConsults import *
 
 
 
-@app.route('/getPlayersMatch', methods = ['GET'])
-def getPlayersMatch():
-    type=request.json['Tipo']
-    team1 = request.json['Equipo1']
-    team2 = request.json['Equipo2']
+@app.route('/getPlayersMatch/<type>,<team1>,<team2>', methods = ['GET'])
+def getPlayersMatch(type,team1,team2):
+    
     if type=="EquipoLocal":
         playersMatch = playersFromLocal(team1,team2)
     elif type=="EquipoSeleccion":

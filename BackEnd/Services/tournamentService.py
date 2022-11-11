@@ -19,11 +19,10 @@ def getTournament():
 Service complete
 
 """
-@app.route('/getFaseTournament', methods = ['GET'])
-def getFaseTournament():
+@app.route('/getFaseTournament/<id>', methods = ['GET'])
+def getFaseTournament(id):
 
-    name=request.json['Nombre']
-    Fase = getFase(name)
+    Fase = getFase(id)
     return Fase
     
 
@@ -32,11 +31,10 @@ def getFaseTournament():
 Service complete
 
 """
-@app.route('/getTeamsTournament', methods = ['GET'])
-def getTeamsTournament():
+@app.route('/getTeamsTournament/<id>', methods = ['GET'])
+def getTeamsTournament(id):
 
-    name=request.json['Nombre']
-    Teams = getTeams(name)
+    Teams = getTeams(id)
     return Teams
 
 
