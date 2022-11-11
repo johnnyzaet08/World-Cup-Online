@@ -5,9 +5,9 @@ mysql=MYSQL
 
 def getSelections():
 
-    selection="Selection"
+    selection="Seleccion"
     cursor= mysql.connection.cursor() 
-    cursor.execute('''SELECT name FROM teams WHERE tyepe =%s ''',[selection])
+    cursor.execute('''SELECT name FROM teams WHERE type =%s ''',[selection])
     teams = cursor.fetchall()
     load={}
     load['TSelec']=[]
@@ -21,7 +21,7 @@ def getLocals():
 
     local="Local"
     cursor= mysql.connection.cursor() 
-    cursor.execute('''SELECT name FROM equipos WHERE type =%s ''',[local])
+    cursor.execute('''SELECT name FROM teams WHERE type =%s ''',[local])
     teams = cursor.fetchall()
     load={}
     load['ELocal']=[]

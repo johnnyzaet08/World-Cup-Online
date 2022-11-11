@@ -18,7 +18,7 @@ def playersFromLocal(team1,team2):
 def playersFromSelec(team1,team2):
 
     cursor= mysql.connection.cursor() 
-    cursor.execute('''SELECT * FROM jugador WHERE selecTeam=%s or selecTeam=%s''',[team1,team2])
+    cursor.execute('''SELECT * FROM players WHERE selecTeam=%s or selecTeam=%s''',[team1,team2])
     players = cursor.fetchall()
     load={}
     load['Players']=[]

@@ -2,10 +2,15 @@ from app import MYSQL
 
 mysql=MYSQL
 
+"""
+
+Service Complete
+
+"""
 def createMatchDB(request):
 
     _id = request.json['_id']
-    data= request.json['data']
+    date= request.json['date']
     time= request.json['time']
     fase=request.json['fase']
     team1=request.json['team1']
@@ -15,16 +20,18 @@ def createMatchDB(request):
     
     
     cursor= mysql.connection.cursor()
-    cursor.execute('''INSERT INTO matchs VALUES(%s,%s,%s,%s,%s,%s,%s)''',(_id,data,time,fase,fase,team1,team2,place,_idTournament))   
+    cursor.execute('''INSERT INTO matchs VALUES(%s,%s,%s,%s,%s,%s,%s,%s)''',(_id,date,time,fase,team1,team2,place,_idTournament))   
     mysql.connection.commit()
     cursor.close()
     return "Done"
 
 def getMatchsDB(idTournament):
-
+    x=1421
+    print(idTournament)
     cursor= mysql.connection.cursor() 
-    cursor.execute('''SELECT * FROM partidos WHERE _idTournament=%s''',[idTournament])
+    cursor.execute('''SELECT * FROM matchs WHERE _idTournament=%s''',[str(idTournament)])
     tournament = cursor.fetchall()
+    print(tournament)
     load={}
     load['Tournament']=[]
 

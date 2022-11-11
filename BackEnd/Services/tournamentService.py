@@ -33,7 +33,7 @@ Service complete
 """
 @app.route('/getTeamsTournament/<id>', methods = ['GET'])
 def getTeamsTournament(id):
-
+    print(id)
     Teams = getTeams(id)
     return Teams
 

@@ -31,10 +31,8 @@ Service complete
 def getUserLogin(username, password):
 
     user=getUserLoginDB(username, password)
-
     load={}
     load['UserActive']=[]
-
     for userjson in user:
         load['UserActive'].append(userjson)
 
