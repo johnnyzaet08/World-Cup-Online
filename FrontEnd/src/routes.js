@@ -2,8 +2,6 @@
 import Dashboard from "@material-ui/icons/Dashboard";
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
-//import LibraryBooks from "@material-ui/icons/LibraryBooks";
-//import Register from "@material-ui/icons/GroupAdd";
 import Login from "@material-ui/icons/LockOpen";
 
 // core components/views for Admin layout
@@ -46,7 +44,7 @@ const dashboardRoutes = [
     icon: EmojiEventsIcon,
     component: ViewTournament,
     layout: "/admin",
-    dashboard: true,
+    dashboard: false,
   },
   {
     path: "/login-page",

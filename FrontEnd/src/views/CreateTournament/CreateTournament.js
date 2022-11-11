@@ -41,9 +41,21 @@ export default function CreateTournament() {
 
   const classes = useStyles();
 
+  const radioOptions = [
+    {
+      value: "Selection",
+      label: "Selections",
+    },
+    {
+      value: "Local",
+      label: "Local",
+    },
+  ]
+
   const [tName, setTName] = useState("");
   const [initialDate, setIDate] = useState(null);
   const [endDate, setEDate] = useState(null);
+  const [type, setType] = useState(null);
 
   // *************************************************************
   // ******************** HANDLE EVENTS **************************
@@ -57,6 +69,10 @@ export default function CreateTournament() {
 
   const handleEDateChange = (event) => {
     setEDate(event);
+  };
+
+  const handleTypeChange = (event) => {
+    setType(event.target.value);
   };
 
   const handleClick = async (event) => {
@@ -74,7 +90,7 @@ export default function CreateTournament() {
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Crear Torneo</h4>
+              <h4 className={classes.cardTitleWhite}>Create Tournament</h4>
               <p className={classes.cardCategoryWhite}>
                 Complete all the information for this new tournament
               </p>
@@ -122,7 +138,16 @@ export default function CreateTournament() {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                   <br></br>
-                  <ControlledRadioButtonsGroup />
+                  <ControlledRadioButtonsGroup
+                    options={radioOptions}
+                    labelText="Tournament Type"
+                    row={true}
+                    value={type}
+                    onChange={(type) => handleTypeChange(type)}
+                    formControlProps={{
+                      fullWidth: true,
+                    }}
+                  />
                 </GridItem>
               </GridContainer>
               <GridContainer>
@@ -153,13 +178,8 @@ export default function CreateTournament() {
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
-                  <InputLabel style={{ color: "#000000" }}>
-                    <br></br>
-                    <br></br>
-                    Description
-                  </InputLabel>
                   <CustomInput
-                    labelText="Rules, Data..."
+                    labelText="Description"
                     id="description"
                     type="text"
                     formControlProps={{

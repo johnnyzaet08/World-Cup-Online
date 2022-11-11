@@ -35,7 +35,7 @@ const customInputStyle = {
     ...defaultFont,
     color: grayColor[2] + " !important",
     fontWeight: "400",
-    fontSize: "14px",
+    fontSize: "16px",
     lineHeight: "1.42857",
     letterSpacing: "unset",
   },
@@ -64,13 +64,6 @@ const customInputStyle = {
     margin: "27px 0 0 0",
     position: "relative",
     verticalAlign: "unset",
-  },
-  labelRTL: {
-    right: 0,
-    transition: "all 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
-    "&.MuiInputLabel-shrink": {
-      transform: "translate(0, 1.5px)",
-    },
   },
 };
 

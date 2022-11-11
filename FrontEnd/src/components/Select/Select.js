@@ -20,7 +20,6 @@ export default function BasicSelect(props) {
   const { formControlProps, labelText, options, id, error, success } = props;
   const handleChange = (event) => {
     setValue(event.target.value);
-    console.log(event.target.value);
   };
 
   return (
