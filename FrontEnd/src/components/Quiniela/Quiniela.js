@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import ControlledRadioButtonsGroup from "components/Radio-group/radio-group.js";
 import Button from "components/CustomButtons/Button.js";
 import DynamicSelect from "components/DynamicSelect/DynamicSelect";
+import axios from "axios";
 
 const styles = {
   black: {
@@ -70,7 +71,9 @@ export default function Quiniela(props) {
     }
   };
 
-  const handleTest = () => {
+  const handleTest = async (event) => {
+    event.preventDefault();
+
     const json = {
       matchID: matchID,
       winner: winner,
@@ -80,10 +83,19 @@ export default function Quiniela(props) {
       goalB: sessionStorage.getItem("goalB"),
       assistA: sessionStorage.getItem("assistA"),
       assistB: sessionStorage.getItem("assistB"),
-      MVP: sessionStorage.getItem("MVP"),
+      MVP: sessionStorage.getItem("MVP")
     }
-    console.log("Aqui puede ir lo de axios");
-    console.log(json);
+    console.log(json)
+    const headers = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+      'Content-Type': 'application/json'
+    }
+
+    await axios.post('http://localhost:5000/createPools', json, { headers })
+    .then(response => console.log(response))
+    .catch(error => console.error('There was an error!', error));
+    
   };
   
   const handleWinnerChange = (event) => {

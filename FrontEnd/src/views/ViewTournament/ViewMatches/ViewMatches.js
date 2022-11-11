@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 // @material-ui/core components
 import Quiniela from "components/Quiniela/Quiniela.js";
 
@@ -7,22 +8,21 @@ export default function viewMatches() {
   
   console.log("Se captura todo lo del tournament: ", tournamentID);
   
-  const matches = [
-    {
-      MatchID: 1,
-      TeamA: "Costa Rica",
-      TeamB: "España",
-      PlayersA: ["Messi", "Ronaldo", "Navas"],
-      PlayersB: ["Sergio", "Iker", "Benzema"],      
-    },
-    {
-      MatchID: 2,
-      TeamA: "Costa Rica",
-      TeamB: "Japon",
-      PlayersA: ["Pedri", "Gavi", "Navas"],
-      PlayersB: ["Blanco", "Pelon", "Santa"],      
-    },
-  ]
+  const [matches, setMatches] = useState([]);
+
+  const callMatchs = async () => {
+    await axios.get('http://localhost:5000/getMatchs/'+tournamentID)
+                .then(response => {
+                  setMatches(response.data)
+                })
+                .catch(error => {
+                  console.error('There was an error!', error);
+                });
+    }
+    useEffect(async () => {
+      await callMatchs();
+    }, []);
+  
   return (
     <div>
       {

@@ -1,5 +1,5 @@
 from app import MYSQL
-
+from ConsultsDB.playersConsults import *
 mysql=MYSQL
 
 """
@@ -28,14 +28,32 @@ def createMatchDB(request):
 def getMatchsDB(idTournament):
     
     cursor= mysql.connection.cursor() 
-    cursor.execute('''SELECT * FROM matchs WHERE _idTournament=%s''',[idTournament])
+    cursor.execute('''SELECT _id,team1,team2 FROM matchs WHERE _idTournament=%s''',[idTournament])
     tournament = cursor.fetchall()
     load={}
     load["Matchs"] = []
     for tournamentins in tournament:
         load["Matchs"].append(tournamentins)
+    resp={}
+    response=[]
+    
+    for index in load['Matchs']:
 
-    return load
+        resp['MatchID']=(index[0])
+        resp['TeamA']=(index[1])
+        resp['TeamB']=(index[2])
+        loadTeamA=playersFromTeam1(index[1])
+        loadTeamB=playersFromTeam1(index[2])
+        resp['PlayersA']=loadTeamA
+        resp['PlayersB']=loadTeamB
+        response.append(resp)
+        resp={}
+        
+        
+
+    return response
+
+
 
 def getAllMatchsDB():
     

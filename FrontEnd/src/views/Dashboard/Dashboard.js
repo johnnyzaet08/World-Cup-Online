@@ -20,13 +20,13 @@ export default function Dashboard() {
   
   const history = useHistory();
   const [
-    //isLoading, 
+    isLoading, 
     setLoading] = useState(true);
   const [
-    //tournaments, 
+    tournaments, 
     setTournaments] = useState([]);
   const [
-    //tournamentsID, 
+    tournamentsID, 
     setTournamentsID] = useState([]);
   useEffect(() => {
     getTournaments();
@@ -57,8 +57,8 @@ export default function Dashboard() {
                 });
     }
   
-  const Description = ["tournaments"];
-  const Index = ["tournamentsID"];
+  const Description = tournaments;
+  const Index = tournamentsID;
   const handleInputChange = (i) => {
     sessionStorage.setItem("TournamentID", Index[i]);
     history.push({
@@ -80,9 +80,9 @@ export default function Dashboard() {
     alert("Error al inicio de sesion");
     history.push("/auth/login-page");
   }
-  /*else if (isLoading) {
+  else if (isLoading) {
     return <div className="CreateTournament">Loading...</div>;
-  }*/
+  }
   else{
     return (
       <div>
