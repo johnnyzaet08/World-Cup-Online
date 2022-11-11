@@ -1,33 +1,40 @@
 import React from "react";
 import propTypes from "prop-types";
+import classNames from "classnames";
 import { NavLink } from "react-router-dom";
-//import styles from "assets/jss/material-dashboard-react/components/simpleNavbarStyle.js";
+import { makeStyles } from "@material-ui/core/styles";
+import styles from "assets/jss/material-dashboard-react/components/simpleNavbarStyle.js";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+
+const useStyles = makeStyles(styles);
 
 export default function SimpleNavbar(props){
-    const { routes } = props;
-    return(
-        <React.Fragment>
-            <section>
-                <div className="bg-blue-900 w-full text-black text-xl h-20 grid-cols-2 items-center">
-                    {
-                        routes.map((route, index) => {
-                            return(
-                                <div key={index}>
-                                    <NavLink
-                                    to={route.layout + route.path}
-                                    >
-                                        <span>
-                                            {route.name}
-                                        </span>
-                                    </NavLink>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-            </section>
-        </React.Fragment>
-    )
+  const { routes } = props;
+  const classes = useStyles();
+  return(
+    <List className={classes.list}>
+    {routes.map((route, index) => {
+        return(
+          <NavLink
+          to={route.layout + route.path}
+          className={classes.item}
+          key={index}
+          >
+            <ListItem button className={classes.itemLink}>
+              <ListItemText
+              primary={route.name}
+              className={classNames(classes.itemText)}
+              disableTypography={true}
+              />
+            </ListItem>
+          </NavLink>
+        )
+      })
+    }
+    </List>
+  )
 }
 
 SimpleNavbar.propTypes = {

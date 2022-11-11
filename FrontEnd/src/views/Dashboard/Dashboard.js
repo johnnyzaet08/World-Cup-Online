@@ -54,10 +54,13 @@ export default function Dashboard() {
   const Description = tournaments;
   const Index = tournamentsID;
   const handleInputChange = (i) => {
+    const data = new Response(JSON.stringify(Index[i]));
+    caches.open("TournamentID").then((cache) => {
+      cache.put(window.location.pathname, data);
+    });
     history.push({
         pathname: '/admin/viewtournament/',
-        tournamentID: Index[i],
-      });
+    });
   }
   if (isLoading) {
     return <div className="CreateTournament">Loading...</div>;

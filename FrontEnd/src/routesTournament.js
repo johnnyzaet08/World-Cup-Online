@@ -1,5 +1,6 @@
 import viewMatches from "views/ViewTournament/ViewMatches/ViewMatches.js";
 import viewRanking from "views/ViewTournament/ViewRanking/ViewRanking.js";
+import createMatch from "views/CreateMatch/CreateMatch.js";
 
 const tournamentRoutes = [
   {
@@ -14,12 +15,12 @@ const tournamentRoutes = [
     component: viewRanking,
     layout: "/admin/viewtournament",
   },
-  /*{
-    path: "/viewtournament",
-    name: "View Tournament",
-    component: ViewTournament,
+  {
+    path: "/createMatch",
+    name: "Create Match",
+    component: createMatch,
     layout: "/admin/viewtournament",
-  },*/
+  },
 ];
 
 export default tournamentRoutes;

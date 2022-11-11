@@ -1,8 +1,7 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 // core components
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -15,13 +14,27 @@ const useStyles = makeStyles(styles);
 
 export default function ViewTournament() {
   const classes = useStyles();
-  const history = useHistory();
-  let ID = history.location.tournamentID;
+  const [cacheData, setCacheData] = useState();
+
+  const getCache = () => {
+    caches.open("TournamentID").then((cache) => {
+      cache.match("/admin/viewtournament/").then((response) => {
+        response.json().then((dataResponse) => {
+          setCacheData(dataResponse);
+        });
+      })
+    });
+  };
+
+  useEffect(() => {
+    getCache();
+  });
+
   return (
     <div className={classes.mainPanel}>
         <Card>
           <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Tournament ID: {ID}</h4>
+            <h4 className={classes.cardTitleWhite}>Tournament ID: {cacheData}</h4>
             <p className={classes.cardCategoryWhite}>
               Here is a subtitle for this table
             </p>
@@ -48,6 +61,7 @@ export default function ViewTournament() {
                 return null;
               })}
             </Switch>
+            <Redirect from="/admin/viewtournament" to="/admin/viewtournament/viewmatches"/>
           </Card>
         </div>
     </div>
