@@ -42,6 +42,10 @@ export default function CreateMatch() {
   const [campus, setCampus] = useState("");
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
+  const [tournament, setTournament] = useState("");
+  const [phase, setPhase] = useState("");
+  const [first, setFirst] = useState("");
+  const [second, setSecond] = useState("");
 
   const options1 = [
     {
@@ -74,6 +78,22 @@ export default function CreateMatch() {
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
+  };
+
+  const handleTournamentChange = (newTournament) => {
+    setTournament(newTournament.target.value);
+  };
+
+  const handlePhaseChange = (newPhase) => {
+    setPhase(newPhase.target.value);
+  };
+
+  const handleFirstChange = (newFirst) => {
+    setFirst(newFirst.target.value);
+  };
+
+  const handleSecondChange = (newSecond) => {
+    setSecond(newSecond.target.value);
   };
 
   const handleClick = async (event) => {
@@ -177,6 +197,8 @@ export default function CreateMatch() {
                     labelText="Tournament Select"
                     id="tournamentID"
                     options={options1}
+                    value={tournament}
+                    onChange={(newTournament) => handleTournamentChange(newTournament)}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -187,6 +209,8 @@ export default function CreateMatch() {
                     labelText="Select tournament phase"
                     id="tournament-phase"
                     options={options2}
+                    value={phase}
+                    onChange={(newPhase) => handlePhaseChange(newPhase)}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -200,6 +224,8 @@ export default function CreateMatch() {
                     labelText="First Team"
                     id="first-team"
                     options={options1}
+                    value={first}
+                    onChange={(newFirst) => handleFirstChange(newFirst)}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -210,6 +236,8 @@ export default function CreateMatch() {
                     labelText="Second Team"
                     id="second-team"
                     options={options2}
+                    value={second}
+                    onChange={(newSecond) => handleSecondChange(newSecond)}
                     formControlProps={{
                       fullWidth: true,
                     }}

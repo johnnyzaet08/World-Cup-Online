@@ -16,11 +16,7 @@ const useStyles = makeStyles(styles);
 
 export default function BasicSelect(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState("");
-  const { formControlProps, labelText, options, id, error, success } = props;
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+  const { formControlProps, value, onChange, labelText, options, id, error, success } = props;
 
   return (
     <FormControl
@@ -34,7 +30,7 @@ export default function BasicSelect(props) {
           id={id}
           value={value}
           label={labelText}
-          onChange={handleChange}
+          onChange={onChange}
         >
           {options.map((option, index) => {
             return <MenuItem value={option.value} key={index}> {option.text} </MenuItem>
@@ -53,6 +49,8 @@ export default function BasicSelect(props) {
 BasicSelect.propTypes = {
   labelText: PropTypes.string,
   id: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
   options: PropTypes.arrayOf( PropTypes.object ),
   formControlProps: PropTypes.object,
   labelProps: PropTypes.object,
