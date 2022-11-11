@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import Button from '@mui/material/Button';
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Typography from '@mui/material/Typography';
@@ -12,6 +13,7 @@ import BasicDatePicker from "components/DatePicker/DatePicker.js";
 import axios from "axios";
 
 export default function SignUp() {
+  const history = useHistory();
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,21 +47,26 @@ export default function SignUp() {
 
     event.preventDefault();
     const json = {
-      '" Email "': "",
+      
       '" Username "': "",
+      '" Email "': "",
       '" Password "': "",
       '" FirstName "': "",
       '" LastName "': "",
       '" Country "': "",
       '" Birthday "': "",
+      '" isAdmin "': "",
     };
-    json.Email = email;
+    
     json.Username = user;
+    json.Email = email;
     json.Password = password;
-    json.FirstName = firstName;
-    json.LastName = lastName;
+    json.Firstname = firstName;
+    json.Lastname = lastName;
     json.Country = country;
-    json.Birthday = birthday;
+    json.Birthday =  new Date(birthday).toLocaleDateString();
+    json.isAdmin = "False"
+    
     
     console.log(json);
 
@@ -71,11 +78,18 @@ export default function SignUp() {
 
       "Content-Type": "application/json",
     };
+    let validate="False"
     await axios
       .post("http://localhost:5000/createUser", json, { headers })
-      .then((response) => console.log(response))
+      .then((response) => {
+        if (response){
+            validate="True"
+        }})
       .catch((error) => console.error("There was an error!", error));
-
+      console.log(validate)
+    if (validate=="True"){
+      history.push("/auth/login-page");
+    }
   };
   return (
   <GridContainer alignItems={"center"} justify={"center"}>
@@ -164,7 +178,7 @@ export default function SignUp() {
                 />
                 <br></br>
                 <GridItem xs={12} md={12}>
-                  <Typography variant="body2" color="text.secondary" align="center">{"I agree to the "}
+                  <Typography variant="body2" color="text.secondary" align="center">{"If you create the account you accept to the "}
                   <Link href="https://www.fifa.com/es/terms-of-service">Terms and Conditions
                   </Link>
                   </Typography>

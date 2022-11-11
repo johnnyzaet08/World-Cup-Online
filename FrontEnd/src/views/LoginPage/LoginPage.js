@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import CustomInput from "components/CustomInput/CustomInput.js";
-//import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -13,43 +13,44 @@ import Link from '@mui/material/Link';
 import axios from "axios";
 
 export default function LoginPage() {
-  //const history = useHistory();
+  const history = useHistory();
   const [user, setUser] = useState("");
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   
   const handleChangeUser = (event) => {
     setUser(event.target.value);
   };
-  const handleChangeEmail = (event) => {
-    setEmail(event.target.value);
+  const handleChangePassword = (event) => {
+    setPassword(event.target.value);
   };
   
   const handleClick = async (event) => {
     event.preventDefault();
     const json = {
-      '" Email "': "",
+      
       '" Username "': "",
+      '" Password "': "",
     };
     
-    json.Email = email;
+    json.Password = password;
     json.Username = user;
     console.log(json);
 
-    const headers = {
-      "Access-Control-Allow-Origin": "*",
-
-      "Access-Control-Allow-Headers":
-        "Origin, X-Requested-With, Content-Type, Accept",
-
-      "Content-Type": "application/json",
-    };
+    let validate="False"
 
     await axios
-      .get("http://localhost:5000/getUserLogin/<username>,<password>", json, { headers })
-      .then((response) => console.log(response))
+      .get(`http://localhost:5000/getUserLogin/${json.Username},${json.Password}`)
+      .then((response) => {
+        if (response){
+            validate="True"
+        }})
       .catch((error) => console.error("There was an error!", error));
-
-    //history.push("/admin/dashboard");
+      console.log(validate)
+    if (validate=="True"){
+      history.push("/admin/dashboard");
+    }
+    
+    
   };
 
 
@@ -65,17 +66,7 @@ export default function LoginPage() {
         <CardBody>
           <GridContainer alignItems={"center"} justify={"center"}>
             <GridItem xs={6} md={6}>
-              <CustomInput
-                labelText="Email address"
-                id="email-id"
-                type="email"
-                formControlProps={{
-                  fullWidth: true,
-                }}
-                inputProps={{
-                  onChange: (event) => handleChangeUser(event),
-                }}
-              />
+              
               <CustomInput
                 labelText="Username"
                 type="text"
@@ -84,7 +75,18 @@ export default function LoginPage() {
                   fullWidth: true,
                 }}
                 inputProps={{
-                  onChange: (event) => handleChangeEmail(event),
+                  onChange: (event) => handleChangeUser(event),
+                }}
+              />
+              <CustomInput
+                labelText="Password"
+                id="password"
+                type="text"
+                formControlProps={{
+                  fullWidth: true,
+                }}
+                inputProps={{
+                  onChange: (event) => handleChangePassword(event),
                 }}
               />
             </GridItem>
