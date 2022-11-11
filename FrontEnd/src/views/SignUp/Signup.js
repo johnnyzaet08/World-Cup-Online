@@ -1,118 +1,181 @@
 import React, { useState } from "react";
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Login from "@material-ui/icons/LockOpen";
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import CustomInput from "components/CustomInput/CustomInput.js";
-import BasicDatePicker from "components/DatePicker/DatePicker.js";
+import Typography from '@mui/material/Typography';
+import GridItem from "components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer.js";
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
+import CardHeader from "components/Card/CardHeader.js";
 import Link from '@mui/material/Link';
-import Checkbox from '@mui/material/Checkbox';
+import BasicDatePicker from "components/DatePicker/DatePicker.js";
+import axios from "axios";
 
 export default function SignUp() {
-    //const link = <a href={this.makeHref('https://www.fifa.com/es/terms-of-service')}>Terms and Conditions</a>;
-    const [birthday, setIDate] = useState(null);
-    const handleIDateChange = (event) => {
-        setIDate(event);
-    };
-  const handleSubmit = (event) => {
+  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirst] = useState("");
+  const [lastName, setLast] = useState("");
+  const [country, setCountry] = useState("");
+  const [birthday, setIDate] = useState(null);
+  
+  const handleUserChange = (event) => {
+    setUser(event.target.value);
+  };
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+  const handleFirstChange = (event) => {
+    setFirst(event.target.value);
+  };
+  const handleLastChange = (event) => {
+    setLast(event.target.value);
+  };
+  const handleCountryChange = (event) => {
+    setCountry(event.target.value);
+  };
+  const handleIDateChange = (event) => {
+    setIDate(event);
+  };
+  const handleClick = async (event) => {
+
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email-address'),
-      password: data.get('password'),
-    });
+    const json = {
+      '" Email "': "",
+      '" Username "': "",
+      '" Password "': "",
+      '" FirstName "': "",
+      '" LastName "': "",
+      '" Country "': "",
+      '" Birthday "': "",
+    };
+    json.Email = email;
+    json.Username = user;
+    json.Password = password;
+    json.FirstName = firstName;
+    json.LastName = lastName;
+    json.Country = country;
+    json.Birthday = birthday;
+    
+    console.log(json);
+
+    const headers = {
+      "Access-Control-Allow-Origin": "*",
+
+      "Access-Control-Allow-Headers":
+        "Origin, X-Requested-With, Content-Type, Accept",
+
+      "Content-Type": "application/json",
+    };
+    await axios
+      .post("http://localhost:5000/createUser", json, { headers })
+      .then((response) => console.log(response))
+      .catch((error) => console.error("There was an error!", error));
+
   };
   return (
-  <Container component="main" maxWidth="xs">
-    <Box
-      sx={{
-        marginTop: "auto",
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}>
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <Login/>
-        </Avatar>
-        <Typography component="h1" variant="h5">
-            Sign in
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <CustomInput
-            labelText="Username"
-            id="username"
-            type="text"
-            formControlProps={{
-                fullWidth: true,
-            }}
-            />
-            <CustomInput
-            labelText="Email address"
-            id="email-address"
-            type="email"
-            formControlProps={{
-                fullWidth: true,
-            }}
-            />
-            <CustomInput
-            labelText="Password"
-            type="Password"
-            id="password"
-            formControlProps={{
-                fullWidth: true,
-            }}
-            />
-            <CustomInput
-            labelText="First Name"
-            type="text"
-            id="first-name"
-            formControlProps={{
-                fullWidth: true,
-            }}
-            />
-            <CustomInput
-            labelText="Last Name"
-            type="text"
-            id="last-name"
-            formControlProps={{
-                fullWidth: true,
-            }}
-            />
-            <CustomInput
-            labelText="Country"
-            id="country"
-            type="text"
-            formControlProps={{
-                fullWidth: true,
-            }}
-            />
-            <BasicDatePicker
-            labelText="Birthday"
-            id="birthday"
-            value={birthday}
-            onChange={(date) => handleIDateChange(date)}
-            formControlProps={{
-                fullWidth: true,
-            }}
-            />
-            <Checkbox value="TnC" color="primary"/>
-            <Typography
-            variant="body2" color="text.secondary" align="center">{"I agree to the "}
-                <Link href="https://www.fifa.com/es/terms-of-service">
-                    Terms and Conditions
-                </Link>
-            </Typography>
-            <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}>
-            Sign In
-            </Button>
-        </Box>
-    </Box>
-  </Container>
+  <GridContainer alignItems={"center"} justify={"center"}>
+    <GridItem xs={6} md={6}>
+      <Card>
+        <CardHeader color="primary">
+          <h4>Create Profile</h4>
+        </CardHeader>
+        <CardBody>
+          <GridContainer alignItems={"center"} justify={"center"}>
+            <GridItem xs={6} md={6}>
+                <CustomInput
+                  labelText="Username"
+                  id="username-id"
+                  type="text"
+                  formControlProps={{
+                    fullWidth: true,
+                  }}
+                  inputProps={{
+                    onChange: (event) => handleUserChange(event),
+                  }}
+                />
+                <CustomInput
+                  labelText="Email address"
+                  id="email-address"
+                  type="email"
+                  formControlProps={{
+                    fullWidth: true,
+                  }}
+                  inputProps={{
+                    onChange: (event) => handleEmailChange(event),
+                  }}
+                />
+                <CustomInput
+                  labelText="Password"
+                  type="Password"
+                  id="password"
+                  formControlProps={{
+                    fullWidth: true,
+                  }}
+                  inputProps={{
+                    onChange: (event) => handlePasswordChange(event),
+                  }}
+                />
+                <CustomInput
+                  labelText="First Name"
+                  type="text"
+                  id="first-name"
+                  formControlProps={{
+                      fullWidth: true,
+                  }}
+                  inputProps={{
+                    onChange: (event) => handleFirstChange(event),
+                  }}
+                />
+                <CustomInput
+                  labelText="Last Name"
+                  type="text"
+                  id="last-name"
+                  formControlProps={{
+                      fullWidth: true,
+                  }}
+                  inputProps={{
+                    onChange: (event) => handleLastChange(event),
+                  }}
+                />
+                <CustomInput
+                  labelText="Country"
+                  id="country"
+                  type="text"
+                  formControlProps={{
+                      fullWidth: true,
+                  }}
+                  inputProps={{
+                    onChange: (event) => handleCountryChange(event),
+                  }}
+                />
+                <BasicDatePicker
+                    labelText="Birthday"
+                    id="birthday"
+                    value={birthday}
+                    onChange={(date) => handleIDateChange(date)}
+                    formControlProps={{
+                        fullWidth: true,
+                    }}
+                />
+                <br></br>
+                <GridItem xs={12} md={12}>
+                  <Typography variant="body2" color="text.secondary" align="center">{"I agree to the "}
+                  <Link href="https://www.fifa.com/es/terms-of-service">Terms and Conditions
+                  </Link>
+                  </Typography>
+                </GridItem>
+                <br></br>
+                <Button color="primary"  onClick={handleClick}>Create Profile</Button>
+            </GridItem>
+          </GridContainer>
+        </CardBody>
+      </Card>
+    </GridItem>
+  </GridContainer>
   );
 }
