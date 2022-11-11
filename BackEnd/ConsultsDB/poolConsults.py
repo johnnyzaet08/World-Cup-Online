@@ -20,17 +20,31 @@ def createPoolDB(request):
     mysql.connection.commit()
     cursor.close()
 
-    for teamsinsert in teams:
-        print(teamsinsert)
+    for goalInsertA in goalA:
+
         cursor= mysql.connection.cursor()
-        cursor.execute('''INSERT INTO teamstournament VALUES(%s,%s)''',(_id,teamsinsert))
+        cursor.execute('''INSERT INTO goalsplayerpool VALUES(%s,%s,%s,%s)''',("1",_id, goalInsertA, "teamA"))
         mysql.connection.commit()
         cursor.close()
 
-    for fasesinsert in fases:
-        print(fasesinsert)
+    for goalInsertB in goalB:
+
         cursor= mysql.connection.cursor()
-        cursor.execute('''INSERT INTO fasestournament VALUES(%s,%s)''',(_id,fasesinsert))
+        cursor.execute('''INSERT INTO goalsplayerpool VALUES(%s,%s,%s,%s)''',("2",_id, goalInsertB,"teamB"))
+        mysql.connection.commit()
+        cursor.close()
+
+    for assitInsertA in assistA:
+
+        cursor= mysql.connection.cursor()
+        cursor.execute('''INSERT INTO assistplayerpool VALUES(%s,%s,%s,%s)''',("3",_id , assitInsertA,"teamA"))
+        mysql.connection.commit()
+        cursor.close()
+
+    for assitInsertB in assistB:
+
+        cursor= mysql.connection.cursor()
+        cursor.execute('''INSERT INTO assistplayerpool VALUES(%s,%s,%s,%s)''',("4",_id , assitInsertB,"teamB"))
         mysql.connection.commit()
         cursor.close()
 
