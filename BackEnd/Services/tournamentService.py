@@ -13,6 +13,17 @@ def getTournament():
     Tournaments = getTournaments()
     return Tournaments
 
+
+"""
+
+Service complete
+
+"""
+@app.route('/getTournamentDB', methods = ['GET'])
+def getTournamentDB():
+
+    Tournaments = getTournamentsDB_ID()
+    return Tournaments
 """
 
 Service complete

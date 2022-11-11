@@ -37,11 +37,26 @@ def getTournaments():
     cursor= mysql.connection.cursor() 
     cursor.execute('''SELECT name FROM tournament ''')
     torneos = cursor.fetchall()
+    print(torneos)
     load={}
     load['Tournaments']=[]
 
     for torneoss in torneos:
-        load['Tournaments'].append(torneoss[0])
+        load['Tournaments'].append(torneoss)
+
+    return load
+
+def getTournamentsDB_ID():
+
+    cursor= mysql.connection.cursor() 
+    cursor.execute('''SELECT _id FROM tournament ''')
+    torneos = cursor.fetchall()
+    print(torneos)
+    load={}
+    load['Tournaments']=[]
+
+    for torneoss in torneos:
+        load['Tournaments'].append(torneoss)
 
     return load
 

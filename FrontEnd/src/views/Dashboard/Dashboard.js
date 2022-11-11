@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+
 // react plugin for creating charts
 // @material-ui/core
 // @material-ui/icons
@@ -12,21 +13,58 @@ import CardBody from "components/Card/CardBody.js";
 import CardImages from "components/Card/CardImages";
 import CardFooter from "components/Card/CardFooter.js";
 import Button from "components/CustomButtons/Button.js";
-
+import axios from "axios";
 import avatar from "assets/img/copa.png";
 
 export default function Dashboard() {
-  const Description = ["Torneo 1", "Torneo 2", "Torneo 3", "Torneo 4", "Torneo 5","Torneo 6"];
-  const Index = ["ID1","ID2","ID3","ID4","ID5","ID6"];
+  
   const history = useHistory();
+  const [isLoading, setLoading] = useState(true);
+  const [tournaments, setTournaments] = useState([]);
+  const [tournamentsID, setTournamentsID] = useState([]);
+  useEffect(() => {
+    getTournaments();
+    getTournamentsID();
+  }, []);
+  const getTournaments = () => {
+    axios.get('http://localhost:5000/getTournament')
+                .then(response => {
+                  let temp = response.data.Tournaments;
+                  console.log("TEMP VALUE:", temp);
+                  setTournaments(temp);
+                  setLoading(false);
+                })
+                .catch(error => {
+                  console.error('There was an error!', error);
+                });
+    }
+  const getTournamentsID = () => {
+    axios.get('http://localhost:5000/getTournamentDB')
+                .then(response => {
+                  let temp = response.data.Tournaments;
+                  console.log("TEMP VALUE:", temp);
+                  setTournamentsID(temp);
+                  setLoading(false);
+                })
+                .catch(error => {
+                  console.error('There was an error!', error);
+                });
+    }
+  
+
+  const Description = tournaments;
+  const Index = tournamentsID;
   const handleInputChange = (i) => {
     history.push({
         pathname: '/admin/viewtournament/',
         tournamentID: Index[i],
       });
   }
+  if (isLoading) {
+    return <div className="CreateTournament">Loading...</div>;
+  }
   return (
-    <div>
+    <div>|
       <GridContainer>
       {Description.map((data,i) =>{
         return(
