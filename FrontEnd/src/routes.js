@@ -11,7 +11,6 @@ import CreateTournament from "views/CreateTournament/CreateTournament.js";
 import ViewTournament from "views/ViewTournament/ViewTournament.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
 import SignUp from "views/SignUp/Signup.js";
-import Quiniela from "views/Quiniela/Quiniela";
 
 const dashboardRoutes = [
   {
@@ -66,14 +65,6 @@ const dashboardRoutes = [
     icon: Login,
     component: SignUp,
     layout: "/auth",
-    dashboard: false,
-  },
-  {
-    path: "/Quiniela",
-    name: "Quiniela",
-    icon: Login,
-    component: Quiniela,
-    layout: "/admin",
     dashboard: false,
   },
 ];
