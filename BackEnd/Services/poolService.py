@@ -26,3 +26,30 @@ def getPools():
 
 
     return response
+
+
+"""
+
+Service complete
+
+"""
+@app.route('/getGoalPools', methods = ['GET'])
+def getGoalPools():
+
+    response=getGoalPoolDB()
+
+
+    return response
+
+"""
+
+Service complete
+
+"""
+@app.route('/getAssistPools', methods = ['GET'])
+def getAssistPools():
+
+    response=getAssistPoolDB()
+
+
+    return response

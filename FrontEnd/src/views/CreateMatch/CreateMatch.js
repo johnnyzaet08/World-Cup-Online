@@ -217,20 +217,22 @@ export default function CreateMatch() {
         /*********** Compara el día ingresado con el día actual ****************/
         if(Number(json.date.substring(0,2))>=Number(localDate.substring(0,2))){
           /*********** Compara la hora ingresado con la hora actual **************/
-          if(Number(json.time.substring(0,2))>=Number(localTime.substring(0,2))
-          || Number(json.time.substring(0,1))>=Number(localTime.substring(0,1))){
-            /****** Compara los minutos ingresados con los minutos actuales ********/
-            if(Number(json.time.substring(3,5))>=Number(localTime.substring(3,5))){
-              console.log("OK!");
+          if((Number(json.date.substring(0,2))==Number(localDate.substring(0,2)))){
+            if(Number(json.time.substring(0,2))>=Number(localTime.substring(0,2))
+            || Number(json.time.substring(0,1))>=Number(localTime.substring(0,1))){
+              /****** Compara los minutos ingresados con los minutos actuales ********/
+              if(Number(json.time.substring(3,5))>=Number(localTime.substring(3,5))){
+                console.log("OK!");
+              }
+              else{
+                validatePost=false;
+                alert("No se pudo crear el partido: La hora no puede ser previa a la actual.");
+              }
             }
             else{
               validatePost=false;
               alert("No se pudo crear el partido: La hora no puede ser previa a la actual.");
             }
-          }
-          else{
-            validatePost=false;
-            alert("No se pudo crear el partido: La hora no puede ser previa a la actual.");
           }
         }
         else{

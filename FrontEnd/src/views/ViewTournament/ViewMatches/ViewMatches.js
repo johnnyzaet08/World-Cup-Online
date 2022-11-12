@@ -10,6 +10,8 @@ export default function viewMatches() {
   
   const [matches, setMatches] = useState([]);
 
+  // *************************************************************
+  // *********************** GET DATA ****************************
   const callMatchs = async () => {
     await axios.get('http://localhost:5000/getMatchs/'+tournamentID)
                 .then(response => {
@@ -22,6 +24,8 @@ export default function viewMatches() {
     useEffect(async () => {
       await callMatchs();
     }, []);
+
+  
   
   return (
     <div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -58,6 +58,71 @@ export default function Quiniela(props) {
   const [winner, setWinner] = React.useState(null);  
   const [teamBScore, seteamBScore] = useState(0);
   const [teamAScore, seteamAScore] = useState(0);
+  const [pools, setPools] = useState([]);
+  const [goalPools, setGoalPools] = useState([]);
+  const [assistPools, setAssistPools] = useState([]);
+
+  const separator = (toSeparate) =>{
+    let separated = [];
+    let temp = "";
+    for(let i=0;i<toSeparate.length;i++){
+      temp += toSeparate[i];
+      if(i%2!=0){
+        separated.push(temp);
+        temp="";
+      }
+    }
+    return separated;
+  }
+
+  // *************************************************************
+  // *********************** GET DATA ****************************
+
+  const callPools = async () => {
+    await axios.get('http://localhost:5000/getPools')
+                .then(response => {
+                  setPools(response.data.Pools);
+                  console.log("POOLS:",response.data);
+                })
+                .catch(error => {
+                  console.error('There was an error!', error);
+                });
+    }
+  useEffect(async () => {
+    await callPools();
+  }, []); 
+
+  const callGoalsPools = async () => {
+    await axios.get('http://localhost:5000/getGoalPools')
+                .then(response => {
+                  setGoalPools(response.data.GoalsPools);
+                  console.log("GOAL POOLS:",response.data);
+                })
+                .catch(error => {
+                  console.error('There was an error!', error);
+                });
+    }
+    useEffect(async () => {
+      await callGoalsPools();
+    }, []); 
+
+  const callAssistPools = async () => {
+    await axios.get('http://localhost:5000/getAssistPools')
+                .then(response => {
+                  setAssistPools(response.data.AssistPools)
+                  console.log("ASSIST POOLS:",response.data);
+                })
+                .catch(error => {
+                  console.error('There was an error!', error);
+                });
+    }
+    useEffect(async () => {
+      await callAssistPools();
+    }, []); 
+
+
+  // *************************************************************
+  // ******************** HANDLE EVENTS **************************
 
   const handleTeamBChange = (event) => {
     if (parseInt( event.target.value)>=0){
@@ -74,28 +139,64 @@ export default function Quiniela(props) {
   const handleTest = async (event) => {
     event.preventDefault();
 
+    let scorersA = sessionStorage.getItem("goalA").split(',');
+    let scorersB = sessionStorage.getItem("goalB").split(',');
+
+    const scorersAFinal = separator(scorersA);
+    const scorersBFinal = separator(scorersB);
+
+    console.log("GOALS PLAYERS A:", scorersAFinal);
+    console.log("GOALS PLAYERS B:", scorersBFinal);
+
+    let assistersA = sessionStorage.getItem("assistA").split(',');
+    let assistersB = sessionStorage.getItem("assistB").split(',');
+
+    const assistersAFinal = separator(assistersA);
+    const assistersBFinal = separator(assistersB);
+
+    console.log("ASSIST PLAYERS A:", assistersAFinal);
+    console.log("ASSIST PLAYERS B:", assistersBFinal);
+
+    const mvpFinal = separator(sessionStorage.getItem("MVP").split(','));
+
+    let _idGoalsPlayer = [];
+    let _idAssistPlayer = [];
+    for(let i=0;i<(teamAScore+teamBScore);i++){
+      _idGoalsPlayer[i]=i+goalPools.length+1;
+    }
+    for(let i=0;i<(teamAScore+teamBScore);i++){
+      _idAssistPlayer[i]=i+assistPools.length+1;
+    }
+
     const json = {
+      _id: (pools.length+1),
       matchID: matchID,
       winner: winner,
       teamAScore: teamAScore,
       teamBScore: teamBScore,
-      goalA: sessionStorage.getItem("goalA"),
-      goalB: sessionStorage.getItem("goalB"),
-      assistA: sessionStorage.getItem("assistA"),
-      assistB: sessionStorage.getItem("assistB"),
-      MVP: sessionStorage.getItem("MVP")
+      _idGoalsPlayer: _idGoalsPlayer,
+      goalA: scorersAFinal,
+      goalB: scorersBFinal,
+      _idAssistPlayer: _idAssistPlayer,
+      assistA: assistersAFinal,
+      assistB: assistersBFinal,
+      MVP: mvpFinal
     }
     console.log(json)
+    
     const headers = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
       'Content-Type': 'application/json'
     }
-
+    
     await axios.post('http://localhost:5000/createPools', json, { headers })
     .then(response => console.log(response))
     .catch(error => console.error('There was an error!', error));
-    
+
+    await callPools();
+    await callAssistPools();
+    await callGoalsPools();
   };
   
   const handleWinnerChange = (event) => {
