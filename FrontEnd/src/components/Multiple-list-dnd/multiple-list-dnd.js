@@ -54,17 +54,18 @@ class MultipleDragList extends Component {
   
   constructor(props){
     super(props);
+
     this.list = props.teamsList;
-    this.refe = props.refe;
     console.log("TEAMS LIST AT MDL:", this.list);
+
     this.state = {
       items: getItems(this.list),
       selected: getItems([]),
     };
-  }
 
-  getSelected = () => {
-    console.log(this.state.selected);
+    this.functionHandler = (data) => {
+      props.passChildData(data);
+    }
   }
 
   // Defining unique ID for multiple lists
@@ -111,6 +112,8 @@ class MultipleDragList extends Component {
         items: result.droppable,
         selected: result.droppable2,
       });
+      
+      this.functionHandler(result.droppable2);
     }
   };
 
@@ -179,8 +182,8 @@ class MultipleDragList extends Component {
 }
 
 MultipleDragList.propTypes = {
-  refe: PropTypes.any,
   teamsList: PropTypes.any,
+  passChildData: PropTypes.func,
 };
 
 export default MultipleDragList;

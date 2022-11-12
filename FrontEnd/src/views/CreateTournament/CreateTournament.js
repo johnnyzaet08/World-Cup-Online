@@ -17,7 +17,6 @@ import ControlledRadioButtonsGroup from "components/Radio-group/radio-group.js";
 import "bootstrap/dist/css/bootstrap.css";
 import { Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
-import { createRef } from "react";
 
 const styles = {
   cardCategoryWhite: {
@@ -40,10 +39,8 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function CreateTournament() {
+export default function CreateTournament(){
   const classes = useStyles();
-
-  const childRef = createRef(null);
 
   const radioOptions = [
     {
@@ -56,6 +53,8 @@ export default function CreateTournament() {
     },
   ]
 
+  let tournamentsLength = 0;
+
   const [isLoading, setLoading] = useState(true);
   const [tName, setTName] = useState("");
   const [initialDate, setIDate] = useState(null);
@@ -64,6 +63,8 @@ export default function CreateTournament() {
   const [tournamentPhase, setTournamentPhase] = useState([{ newStage: "" }]);
   const [description, setDescription] = useState("");
   const [teams, setTeams] = useState([]);
+
+  const [childData, setChildData] = useState("");
 
   useEffect(() => {
     getLocalTeams();
@@ -84,6 +85,31 @@ const getLocalTeams = () => {
               });
   }
 
+  const getSelecTeams = () => {
+    axios.get('http://localhost:5000/getSelecTeams')
+                .then(response => {
+                  let temp = response.data.TSelec;
+                  console.log("TEMP VALUE:", temp);
+                  setTeams(temp);
+                  setLoading(false);
+                })
+                .catch(error => {
+                  console.error('There was an error!', error);
+                });
+    }
+
+    const callTournaments = async () => {
+      await axios.get('http://localhost:5000/getTournament')
+                  .then(response => {
+                    if(response.data != []){
+                      tournamentsLength = response.data.Tournaments.length;
+                    }
+                  })
+                  .catch(error => {
+                    console.error('There was an error!', error);
+                  });
+    }
+
   // *************************************************************
   // ******************** HANDLE EVENTS **************************
   const handleTournamentNameChange = (event) => {
@@ -99,7 +125,17 @@ const getLocalTeams = () => {
   };
 
   const handleTournamentTypeChange = (event) => {
-    setTournamentType(event.target.value);
+    let temp = event.target.value;
+    setTournamentType(temp);
+    if(temp == "Local"){
+      getLocalTeams();
+      setLoading(true);
+    }
+    else{
+      getSelecTeams();
+      setLoading(true);
+    }
+
   };
 
   const handlePhaseInputChange = (index, event) => {
@@ -128,39 +164,42 @@ const getLocalTeams = () => {
   const handleClick = async (event) => {
     event.preventDefault();
 
-    //childRef.current.getSelected();
-    
     let tournamentTeams="";
-    for(let i=0;i<teams.length;i++){
-      tournamentTeams=tournamentTeams+teams[i].content+",";
-      console.log(tournamentTeams)
+    for(let i=0;i<childData.length;i++){
+      if((i+1)==childData.length){
+        tournamentTeams=tournamentTeams+childData[i].content;
+      }
+      else{
+        tournamentTeams=tournamentTeams+childData[i].content+",";
+      }
     }
 
     let tPhases = "";
     for(let i=0;i<tournamentPhase.length;i++){
       tPhases = tPhases+tournamentPhase[i].newStage+",";
-      console.log(tPhases)
     }
 
     const json = {
-      "Nombre": "",
-      "FechaInicio": "",
-      "FechaFinal": "",
-      "Tipo": "",
-      "Equipos": "",
-      "Fases": "",
-      "Descripcion": "",
+      "_id": 0,
+      "name": "",
+      "startDate": "",
+      "endDate": "",
+      "description": "",
+      "teams": "",
+      "fases": "",
     };
 
     console.log(json);
 
-    json.Nombre = tName;
-    json.FechaInicio = initialDate;
-    json.FechaFinal = endDate;
-    json.Tipo = tournamentType;
-    json.Equipos = tournamentTeams;
-    json.Fases = tPhases;
-    json.Descripcion = description;
+    await callTournaments();
+
+    json._id = tournamentsLength+1;
+    json.name = tName;
+    json.startDate = new Date(initialDate).toLocaleDateString();
+    json.endDate = new Date(endDate).toLocaleDateString();
+    json.teams = tournamentTeams;
+    json.fases = tPhases;
+    json.description = description;
 
     // *************************************************************
     // ********************** POST DATA ****************************
@@ -171,7 +210,7 @@ const getLocalTeams = () => {
       'Content-Type': 'application/json'
     }
 
-    await axios.post('http://localhost:5000/createTorneos', json, { headers })
+    await axios.post('http://localhost:5000/createTournaments', json, { headers })
     .then(response => console.log(response))
     .catch(error => console.error('There was an error!', error));
   }
@@ -234,9 +273,6 @@ const getLocalTeams = () => {
                 <GridItem xs={12} sm={12} md={12}>
                   <br></br>
                   <ControlledRadioButtonsGroup 
-                    /*id="controlled-radio-buttons"
-                    value={tournamentType}
-                    handleChange={(event) => handleTournamentTypeChange(event)}*/
                     options={radioOptions}
                     labelText="Tournament Type"
                     row={true}
@@ -262,7 +298,7 @@ const getLocalTeams = () => {
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
-                  <MultipleDragList refe={childRef} teamsList={teams}/>
+                  <MultipleDragList teamsList={teams} passChildData={setChildData}/>
                 </GridItem>
               </GridContainer>
               <GridContainer>
