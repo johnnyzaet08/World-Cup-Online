@@ -14,6 +14,7 @@ import BasicDatePicker from "components/DatePicker/DatePicker.js";
 import BasicTimePicker from "components/TimePicker/TimePicker";
 import BasicSelect from "components/Select/Select";
 import axios from "axios";
+import { useEffect } from "react";
 
 const styles = {
   cardCategoryWhite: {
@@ -37,37 +38,93 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function CreateMatch() {
+  // *************************************************************
+  // ********************** VARIABLES ****************************
   const classes = useStyles();
 
+  let tempID = 0;
+  let lengthMacths = 0;
+  const [tournamentID, setTournamentID] = useState(0);
   const [campus, setCampus] = useState("");
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
-  const [tournament, setTournament] = useState("");
-  const [phase, setPhase] = useState("");
-  const [first, setFirst] = useState("");
-  const [second, setSecond] = useState("");
+  const [torneos, setTorneos] = useState([]);
+  const [fases, setFases] = useState([]);
+  const [teams, setTeams] = useState([]);
+  const [tournamentSelected, setTournamentSelected] = React.useState("");
+  const [phaseSelected, setPhaseSelected] = React.useState("");
+  const [firstTeamSelected, setFirstTeamSelected] = React.useState("");
+  const [secondTeamSelected, setSecondTeamSelected] = React.useState("");
 
-  const options1 = [
-    {
-      value: "x",
-      text: "x",
-    },
-    {
-      value: "y",
-      text: "y",
-    },
-  ]
-  const options2 = [
-    {
-      value: "t",
-      text: "t",
-    },
-    {
-      value: "z",
-      text: "z",
-    },
-  ]
+  // *************************************************************
+  // ********************** GET DATA *****************************
+  const callTournaments = async () => {
+     await axios.get('http://localhost:5000/getTournament')
+                .then(response => {
+                  if(response.data != []){
+                    let temp = response.data.Tournaments;
+                    let tempArray = [];
+                    for(let i=0;i<temp.length;i++){
+                      tempArray[i] = temp[i][0];
+                    }
+                    
+                    console.log(tempArray);
+                    setTorneos(tempArray);
+                  }
+                })
+                .catch(error => {
+                  console.error('There was an error!', error);
+                });
+  }
+  useEffect(async () => {
+    await callTournaments();
+  }, []);
 
+  const callPhases = async () => {
+  await axios.get('http://localhost:5000/getFaseTournament/'+tempID)
+              .then(response => {
+                let temp =  response.data.Fases;
+                let tempArray = [];
+                for(let i=0; i<temp.length; i++){
+                  tempArray[i] = temp[i][0];
+                }
+                console.log("FASES:", tempArray);
+                setFases(response.data.Fases);
+              })
+              .catch(error => {
+                console.error('There was an error!', error);
+              });
+  }
+
+  const callTeams = async () => {
+    await axios.get('http://localhost:5000/getTeamsTournament/'+tempID)
+                .then(response => {
+                    let temp =  response.data.Teams;
+                    let tempArray = [];
+                    for(let i=0; i<temp.length; i++){
+                      tempArray[i] = temp[i][0];
+                    }
+                    console.log("EQUIPOS:", tempArray);
+                    setTeams(tempArray);
+                })
+                .catch(error => {
+                  console.error('There was an error!', error);
+                });
+    }
+    
+  const callMatches = async () => {
+    await axios.get('http://localhost:5000/getAllMatchs/')
+                .then(response => {
+                  lengthMacths =  response.data.Matchs.length;
+                  console.log("MATCHES:", lengthMacths)
+                })
+                .catch(error => {
+                  console.error('There was an error!', error);
+                });
+  }
+    
+  // *************************************************************
+  // ******************** HANDLE EVENTS **************************
   const handleChange = (event) => {
     setCampus(event.target.value);
   };
@@ -80,79 +137,72 @@ export default function CreateMatch() {
     setDate(newDate);
   };
 
-  const handleTournamentChange = (newTournament) => {
-    setTournament(newTournament.target.value);
+  const handleTournamentSelected = (newSelect) => {
+    setTournamentSelected(newSelect.target.value);
+    axios.get('http://localhost:5000/getTournamentID/'+newSelect.target.value)
+        .then(response => {
+            setTournamentID(response.data._id[0]);
+            tempID = response.data._id[0];
+            console.log("TOURNAMENT ID:", tempID);
+            callPhases();
+            callTeams();
+        })
+        .catch(error => {
+          console.error('There was an error!', error);
+        });
   };
 
-  const handlePhaseChange = (newPhase) => {
-    setPhase(newPhase.target.value);
+  const handlePhaseSelected = (newSelect) => {
+    setPhaseSelected(newSelect.target.value);
   };
 
-  const handleFirstChange = (newFirst) => {
-    setFirst(newFirst.target.value);
+  const handleFirstTeamSelected = (newSelect) => {
+    setFirstTeamSelected(newSelect.target.value);
   };
 
-  const handleSecondChange = (newSecond) => {
-    setSecond(newSecond.target.value);
+  const handleSecondTeamSelected = (newSelect) => {
+    setSecondTeamSelected(newSelect.target.value);
   };
-
+  
   const handleClick = async (event) => {
     event.preventDefault();
 
-    //const date =  document.getElementById("date-match").value;
-    //const time = document.getElementById("time-match").value;
-    const tournament = document.getElementById("tournamentID").innerHTML;
-
-    const tournamentPhase = document.getElementById("tournament-phase")
-      .innerHTML;
-
-    const firstTeam = document.getElementById("first-team").innerHTML;
-    const secondTeam = document.getElementById("second-team").innerHTML;
-
-    const timeMatch = document.getElementById("time-match");
-
-    console.log(timeMatch);
-    console.log("Date:", new Date(date).toLocaleDateString());
-    console.log("Time:", new Date(time).toLocaleTimeString());
-    console.log("tournament:", tournament);
-    console.log("tournamentPhase:", tournamentPhase);
-    console.log("FirstTeam:", firstTeam);
-    console.log("SecondTeam:", secondTeam);
-    console.log("Campus:", campus);
-
     const json = {
-      '" Fecha "': "",
-      '" Hora "': "",
-      '" Torneo "': "",
-      '" Fase "': "",
-      '" Equipo1 "': "",
-      '" Equipo2 "': "",
-      '" Sede "': "",
+      "_id":0,
+      'date': "",
+      'time': "",
+      'fase': "",
+      'team1': "",
+      'team2': "",
+      'place': "",
+      '_idTournament':0,
     };
 
-    json.Fecha = new Date(date).toLocaleDateString();
-    json.Hora = new Date(time).toLocaleTimeString();
-    json.Torneo = tournament;
-    json.Fase = tournamentPhase;
-    json.Equipo1 = firstTeam;
-    json.Equipo2 = secondTeam;
-    json.Sede = campus;
+    await callMatches();
+
+    json._id = (lengthMacths)+1;
+    json.date = new Date(date).toLocaleDateString();
+    json.time = new Date(time).toLocaleTimeString();
+    json.fase = phaseSelected[0];
+    json.team1 = firstTeamSelected;
+    json.team2 = secondTeamSelected;
+    json.place = campus;
+    json._idTournament = tournamentID;
 
     console.log(json);
 
+    // *************************************************************
+    // ********************** POST DATA ****************************
     const headers = {
       "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+      'Content-Type': 'application/json'
+    }
 
-      "Access-Control-Allow-Headers":
-        "Origin, X-Requested-With, Content-Type, Accept",
-
-      "Content-Type": "application/json",
-    };
-
-    await axios
-      .post("http://localhost:5000/createPartidos", json, { headers })
-      .then((response) => console.log(response))
-      .catch((error) => console.error("There was an error!", error));
+    await axios.post('http://localhost:5000/createMatch', json, { headers })
+    .then(response => console.log(response))
+    .catch(error => console.error('There was an error!', error));
+    
   };
 
   return (
@@ -196,9 +246,9 @@ export default function CreateMatch() {
                   <BasicSelect
                     labelText="Tournament Select"
                     id="tournamentID"
-                    options={options1}
-                    value={tournament}
-                    onChange={(newTournament) => handleTournamentChange(newTournament)}
+                    value={tournamentSelected}
+                    handleChange={(newSelect) => handleTournamentSelected(newSelect)}
+                    options={torneos}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -208,9 +258,9 @@ export default function CreateMatch() {
                   <BasicSelect
                     labelText="Select tournament phase"
                     id="tournament-phase"
-                    options={options2}
-                    value={phase}
-                    onChange={(newPhase) => handlePhaseChange(newPhase)}
+                    value={phaseSelected}
+                    handleChange={(newSelect) => handlePhaseSelected(newSelect)}
+                    options={fases}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -223,9 +273,9 @@ export default function CreateMatch() {
                   <BasicSelect
                     labelText="First Team"
                     id="first-team"
-                    options={options1}
-                    value={first}
-                    onChange={(newFirst) => handleFirstChange(newFirst)}
+                    value={firstTeamSelected}
+                    handleChange={(newSelect) => handleFirstTeamSelected(newSelect)}
+                    options={teams}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -235,9 +285,9 @@ export default function CreateMatch() {
                   <BasicSelect
                     labelText="Second Team"
                     id="second-team"
-                    options={options2}
-                    value={second}
-                    onChange={(newSecond) => handleSecondChange(newSecond)}
+                    value={secondTeamSelected}
+                    handleChange={(newSelect) => handleSecondTeamSelected(newSelect)}
+                    options={teams}
                     formControlProps={{
                       fullWidth: true,
                     }}

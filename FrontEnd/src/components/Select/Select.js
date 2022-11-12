@@ -1,8 +1,8 @@
 import * as React from "react";
 import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,7 +16,7 @@ const useStyles = makeStyles(styles);
 
 export default function BasicSelect(props) {
   const classes = useStyles();
-  const { formControlProps, value, onChange, labelText, options, id, error, success } = props;
+  const { value, formControlProps, labelText, id, error, success, options, handleChange } = props;
 
   return (
     <FormControl
@@ -29,12 +29,13 @@ export default function BasicSelect(props) {
           labelId="demo-simple-select-label"
           id={id}
           value={value}
+          options={options}
           label={labelText}
-          onChange={onChange}
+          onChange={handleChange}
         >
-          {options.map((option, index) => {
-            return <MenuItem value={option.value} key={index}> {option.text} </MenuItem>
-          })}
+          {options.map((option,index) => (
+            <MenuItem key={index} value={option}>{option}</MenuItem>
+          ))}
         </Select>
       </FormControl>
       {error ? (
@@ -47,13 +48,13 @@ export default function BasicSelect(props) {
 }
 
 BasicSelect.propTypes = {
+  value: PropTypes.array,
   labelText: PropTypes.string,
   id: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  options: PropTypes.arrayOf( PropTypes.object ),
   formControlProps: PropTypes.object,
   labelProps: PropTypes.object,
   error: PropTypes.bool,
   success: PropTypes.bool,
+  options: PropTypes.any,
+  handleChange: PropTypes.any,
 };

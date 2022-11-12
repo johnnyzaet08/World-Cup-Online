@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import PropTypes from 'prop-types';
 
-const getItems = (count, offset = 0) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
+const getItems = (teamsF, offset = 0) =>
+  Array.from({ length: teamsF.length }, (v, k) => k).map((k) => ({
     id: `item-${k + offset}`,
-    content: `item ${k + offset}`,
+    content: teamsF[k + offset],
   }));
+
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
+
   return result;
 };
 
@@ -48,10 +51,21 @@ const getListStyle = (isDraggingOver) => ({
 });
 
 class MultipleDragList extends Component {
-  state = {
-    items: getItems(11),
-    selected: getItems(5, 10),
-  };
+  
+  constructor(props){
+    super(props);
+    this.list = props.teamsList;
+    this.refe = props.refe;
+    console.log("TEAMS LIST AT MDL:", this.list);
+    this.state = {
+      items: getItems(this.list),
+      selected: getItems([]),
+    };
+  }
+
+  getSelected = () => {
+    console.log(this.state.selected);
+  }
 
   // Defining unique ID for multiple lists
   id2List = {
@@ -102,7 +116,7 @@ class MultipleDragList extends Component {
 
   render() {
     return (
-      <div style={{ display: "flex" }}>
+      <div ref={this.ref} style={{ display: "flex" }}>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided, snapshot) => (
@@ -163,5 +177,10 @@ class MultipleDragList extends Component {
     );
   }
 }
+
+MultipleDragList.propTypes = {
+  refe: PropTypes.any,
+  teamsList: PropTypes.any,
+};
 
 export default MultipleDragList;
