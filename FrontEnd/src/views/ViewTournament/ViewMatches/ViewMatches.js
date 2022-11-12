@@ -37,9 +37,7 @@ const styles = {
     },
   },
 };
-
 const useStyles = makeStyles(styles);
-
 export default function TableList() {
   const classes = useStyles();
   return (
