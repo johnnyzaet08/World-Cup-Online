@@ -164,19 +164,14 @@ const getLocalTeams = () => {
   const handleClick = async (event) => {
     event.preventDefault();
 
-    let tournamentTeams="";
+    let tournamentTeams=[];
     for(let i=0;i<childData.length;i++){
-      if((i+1)==childData.length){
-        tournamentTeams=tournamentTeams+childData[i].content;
-      }
-      else{
-        tournamentTeams=tournamentTeams+childData[i].content+",";
-      }
+        tournamentTeams[i]=childData[i].content;
     }
 
-    let tPhases = "";
+    let tPhases = [];
     for(let i=0;i<tournamentPhase.length;i++){
-      tPhases = tPhases+tournamentPhase[i].newStage+",";
+      tPhases[i] = tournamentPhase[i].newStage;
     }
 
     const json = {
