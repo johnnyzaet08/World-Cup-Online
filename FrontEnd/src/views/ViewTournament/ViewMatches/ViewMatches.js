@@ -24,21 +24,28 @@ export default function viewMatches() {
     useEffect(async () => {
       await callMatchs();
     }, []);
-
   
   
   return (
     <div>
       {
         matches.map((data, i) => {
+          var PlayersA = [];
+          var PlayersB = [];
+          data.PlayersA.forEach((player) => {
+            PlayersA.push(player[0].concat(" ", player[1]));
+          });
+          data.PlayersB.forEach((player) => {
+            PlayersB.push(player[0].concat(" ", player[1]));
+          });
           return(
             <Quiniela
               key={i}
               matchID = {data.MatchID}
               teamA = {data.TeamA}
               teamB = {data.TeamB}
-              playersA = {data.PlayersA}
-              playersB = {data.PlayersB}
+              playersA = {PlayersA}
+              playersB = {PlayersB}
             />
           )
         })

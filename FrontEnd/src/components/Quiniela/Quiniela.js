@@ -59,21 +59,12 @@ export default function Quiniela(props) {
   const [teamBScore, seteamBScore] = useState(0);
   const [teamAScore, seteamAScore] = useState(0);
   const [pools, setPools] = useState([]);
-  const [goalPools, setGoalPools] = useState([]);
-  const [assistPools, setAssistPools] = useState([]);
-
-  const separator = (toSeparate) =>{
-    let separated = [];
-    let temp = "";
-    for(let i=0;i<toSeparate.length;i++){
-      temp += toSeparate[i];
-      if(i%2!=0){
-        separated.push(temp);
-        temp="";
-      }
-    }
-    return separated;
-  }
+  const [
+    //goalPools, 
+    setGoalPools] = useState([]);
+  const [
+    //assistPools, 
+    setAssistPools] = useState([]);
 
   // *************************************************************
   // *********************** GET DATA ****************************
@@ -96,7 +87,6 @@ export default function Quiniela(props) {
     await axios.get('http://localhost:5000/getGoalPools')
                 .then(response => {
                   setGoalPools(response.data.GoalsPools);
-                  console.log("GOAL POOLS:",response.data);
                 })
                 .catch(error => {
                   console.error('There was an error!', error);
@@ -109,8 +99,7 @@ export default function Quiniela(props) {
   const callAssistPools = async () => {
     await axios.get('http://localhost:5000/getAssistPools')
                 .then(response => {
-                  setAssistPools(response.data.AssistPools)
-                  console.log("ASSIST POOLS:",response.data);
+                  setAssistPools(response.data.AssistPools);
                 })
                 .catch(error => {
                   console.error('There was an error!', error);
@@ -142,31 +131,10 @@ export default function Quiniela(props) {
     let scorersA = sessionStorage.getItem("goalA").split(',');
     let scorersB = sessionStorage.getItem("goalB").split(',');
 
-    const scorersAFinal = separator(scorersA);
-    const scorersBFinal = separator(scorersB);
-
-    console.log("GOALS PLAYERS A:", scorersAFinal);
-    console.log("GOALS PLAYERS B:", scorersBFinal);
-
     let assistersA = sessionStorage.getItem("assistA").split(',');
     let assistersB = sessionStorage.getItem("assistB").split(',');
 
-    const assistersAFinal = separator(assistersA);
-    const assistersBFinal = separator(assistersB);
-
-    console.log("ASSIST PLAYERS A:", assistersAFinal);
-    console.log("ASSIST PLAYERS B:", assistersBFinal);
-
-    const mvpFinal = separator(sessionStorage.getItem("MVP").split(','));
-
-    let _idGoalsPlayer = [];
-    let _idAssistPlayer = [];
-    for(let i=0;i<(teamAScore+teamBScore);i++){
-      _idGoalsPlayer[i]=i+goalPools.length+1;
-    }
-    for(let i=0;i<(teamAScore+teamBScore);i++){
-      _idAssistPlayer[i]=i+assistPools.length+1;
-    }
+    const mvpFinal = sessionStorage.getItem("MVP").split(',');
 
     const json = {
       _id: (pools.length+1),
@@ -174,12 +142,10 @@ export default function Quiniela(props) {
       winner: winner,
       teamAScore: teamAScore,
       teamBScore: teamBScore,
-      _idGoalsPlayer: _idGoalsPlayer,
-      goalA: scorersAFinal,
-      goalB: scorersBFinal,
-      _idAssistPlayer: _idAssistPlayer,
-      assistA: assistersAFinal,
-      assistB: assistersBFinal,
+      goalA: scorersA,
+      goalB: scorersB,
+      assistA: assistersA,
+      assistB: assistersB,
       MVP: mvpFinal
     }
     console.log(json)
