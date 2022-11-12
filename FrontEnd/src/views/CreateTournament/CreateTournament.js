@@ -205,28 +205,28 @@ const getLocalTeams = () => {
       'Content-Type': 'application/json'
     }
     
-    let validatePos="True"
+    let validatePost=true;
     if(json.name==""){
-      validatePos="False"
-        alert("El nombre del torneo es obligatorio por favor ingrese un nombre de torneo")
-        
-    }if(json.startDate=="31/12/1969" & json.endDate=="31/12/1969" ){
-      validatePos="False"
-      alert("Debe seleccionar las fechas del torneo")
-          
-    }if(json.startDate>json.endDate){
-      validatePos="False"
-      alert("La fecha de inicio no puede ser mayor a la fecha de finalización")
-      
-}   if(tournamentTeams.length<2){
-  validatePos="False"
-      alert("El torneo debe contar con mínimo 2 equipos")
-          
-    }if(tPhases[0]==''){
-      validatePos="False"
-      alert("Debe agregar minímo una fase para el torneo")
-          
-    }if(validatePos=="True"){
+      validatePost=false
+      alert("El nombre del torneo es obligatorio. Por favor ingrese un nombre de torneo") 
+    }
+    if(json.startDate=="31/12/1969" & json.endDate=="31/12/1969" ){
+      validatePost=false
+      alert("Debe seleccionar las fechas del torneo")     
+    }
+    if(json.startDate>json.endDate){
+      validatePost=false
+      alert("La fecha de inicio no puede ser mayor a la fecha de finalización")   
+    }   
+    if(tournamentTeams.length<2){
+      validatePost=false
+      alert("El torneo debe contar con mínimo 2 equipos")     
+    }
+    if(tPhases[0]==''){
+      validatePost=false
+      alert("Debe agregar minímo una fase para el torneo")      
+    }
+    if(validatePost){
       await axios.post('http://localhost:5000/createTournaments', json, { headers })
         .then(response =>{
         if(response.data=="Done"){
@@ -236,16 +236,12 @@ const getLocalTeams = () => {
             setLoading(false);
             setEDate(null)
             setIDate(null)
-            setTournamentPhase([{ newStage: "" }])
-            
-            
-        }
-          } )
-      .catch(error => console.error('There was an error!', error));
+            setTournamentPhase([{ newStage: "" }])    
+        }})
+        .catch(error => console.error('There was an error!', error));
     }
-      }
+  }
       
-
   if (isLoading) {
     return <div className="CreateTournament">Loading...</div>;
   }

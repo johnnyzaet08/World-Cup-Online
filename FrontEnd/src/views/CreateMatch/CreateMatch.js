@@ -44,6 +44,7 @@ export default function CreateMatch() {
 
   let tempID = 0;
   let lengthMacths = 0;
+  let enteredDate = false;
   const [tournamentID, setTournamentID] = useState(0);
   const [campus, setCampus] = useState("");
   const [date, setDate] = useState(null);
@@ -131,6 +132,7 @@ export default function CreateMatch() {
 
   const handleTimeChange = (newTime) => {
     setTime(newTime);
+    enteredDate = true;
   };
 
   const handleDateChange = (newDate) => {
@@ -183,7 +185,7 @@ export default function CreateMatch() {
     json._id = (lengthMacths)+1;
     json.date = new Date(date).toLocaleDateString();
     json.time = new Date(time).toLocaleTimeString();
-    json.fase = phaseSelected[0];
+    json.fase = phaseSelected;
     json.team1 = firstTeamSelected;
     json.team2 = secondTeamSelected;
     json.place = campus;
@@ -199,10 +201,79 @@ export default function CreateMatch() {
       'Content-Type': 'application/json'
     }
 
-    await axios.post('http://localhost:5000/createMatch', json, { headers })
-    .then(response => console.log(response))
-    .catch(error => console.error('There was an error!', error));
-    
+    let validatePost=true;
+    console.log("DATE:",json.date);
+    if(json.date=="31/12/1969"){
+      validatePost=false;
+      alert("No se pudo crear el partido: Debe ingresar una fecha para el partido.");
+    }
+
+    let localDate = new Date().toLocaleDateString(); //Obtiene Fecha actual
+    let localTime = new Date().toTimeString(); //Obtiene Hora Actual
+    /*********** Compara el año ingresado con el año actual ****************/
+    if(Number(json.date.substring(6,10))>=Number(localDate.substring(6,10))){
+      /*********** Compara el mes ingresado con el mes actual ****************/
+      if(Number(json.date.substring(3,5))>=Number(localDate.substring(3,5))){
+        /*********** Compara el día ingresado con el día actual ****************/
+        if(Number(json.date.substring(0,2))>=Number(localDate.substring(0,2))){
+          /*********** Compara la hora ingresado con la hora actual **************/
+          if(Number(json.time.substring(0,2))>=Number(localTime.substring(0,2))
+          || Number(json.time.substring(0,1))>=Number(localTime.substring(0,1))){
+            /****** Compara los minutos ingresados con los minutos actuales ********/
+            if(Number(json.time.substring(3,5))>=Number(localTime.substring(3,5))){
+              console.log("OK!");
+            }
+            else{
+              validatePost=false;
+              alert("No se pudo crear el partido: La hora no puede ser previa a la actual.");
+            }
+          }
+          else{
+            validatePost=false;
+            alert("No se pudo crear el partido: La hora no puede ser previa a la actual.");
+          }
+        }
+        else{
+          validatePost=false;
+          alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
+        }
+      }
+      else{
+        validatePost=false;
+        alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
+      }
+    }
+    else{
+      validatePost=false;
+      alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
+    }
+
+    console.log("TIME:",json.time);
+    if(json.time=="18:00:00" && !enteredDate){
+      validatePost=false;
+      alert("No se pudo crear el partido: Debe ingresar una hora para el partido.");
+    }
+    console.log("FASE:",json.fase);
+    if(json.fase==""){
+      validatePost=false;
+      alert("No se pudo crear el partido: Debe ingresar una fase para el partido.");
+    }
+    console.log("TEAM 1:",json.team1);
+    console.log("TEAM 2:",json.team2);
+    if(json.team1=="" || json.team2==""){
+      validatePost=false;
+      alert("No se pudo crear el partido: Debe ingresar ambos equipos para el partido.");
+    }
+    console.log("CAMPUS:",json.place);
+    if(json.place==""){
+      validatePost=false;
+      alert("No se pudo crear el partido: Debe ingresar una sede para el partido.");
+    }
+    if(validatePost){
+      await axios.post('http://localhost:5000/createMatch', json, { headers })
+      .then(response => console.log(response))
+      .catch(error => console.error('There was an error!', error));
+    }
   };
 
   return (
