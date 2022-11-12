@@ -16,21 +16,23 @@ export default function SimpleNavbar(props){
   return(
     <List className={classes.list}>
     {routes.map((route, index) => {
-        return(
-          <NavLink
-          to={route.layout + route.path}
-          className={classes.item}
-          key={index}
-          >
-            <ListItem button className={classes.itemLink}>
-              <ListItemText
-              primary={route.name}
-              className={classNames(classes.itemText)}
-              disableTypography={true}
-              />
-            </ListItem>
-          </NavLink>
-        )
+        if((sessionStorage.getItem("Type") === "user" && route.user) || (sessionStorage.getItem("Type") === "admin" && route.admin)){
+          return(
+            <NavLink
+            to={route.layout + route.path}
+            className={classes.item}
+            key={index}
+            >
+              <ListItem button className={classes.itemLink}>
+                <ListItemText
+                primary={route.name}
+                className={classNames(classes.itemText)}
+                disableTypography={true}
+                />
+              </ListItem>
+            </NavLink>
+          )
+        }
       })
     }
     </List>

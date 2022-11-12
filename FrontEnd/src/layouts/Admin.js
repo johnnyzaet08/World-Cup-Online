@@ -57,7 +57,6 @@ export default function Admin({ ...rest }) {
     <div className={classes.wrapper}>
       <Sidebar
         routes={routes}
-        logoText={"X-FIFA"}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}

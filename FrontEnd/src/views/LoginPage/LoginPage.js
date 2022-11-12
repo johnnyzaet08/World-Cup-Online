@@ -34,23 +34,23 @@ export default function LoginPage() {
     
     json.Password = password;
     json.Username = user;
-    console.log(json);
 
-    let validate="False"
+    let validate="True"
 
     await axios
       .get(`http://localhost:5000/getUserLogin/${json.Username},${json.Password}`)
       .then((response) => {
-        console.log(response)
-        if (response.data=="Encontrado"){
+        if (response.data == "Encontrado"){
             validate="True"
-        }if(response.data =="Contraseña incorrecta"){
+        }if(response.data == "Contraseña incorrecta"){
             validate="Incorrecta"
         }})
       .catch((error) => console.error("There was an error!", error));
-      console.log(validate)
+      
     if (validate=="True"){
-
+      sessionStorage.setItem("Verified", true);
+      sessionStorage.setItem("User", user);
+      sessionStorage.setItem("Type", "admin");
       history.push("/admin/dashboard");
     }
     if (validate=="Incorrecta"){
@@ -62,10 +62,6 @@ export default function LoginPage() {
     
     
   };
-
-
-
-
   return (
   <GridContainer alignItems={"center"} justify={"center"}>
     <GridItem xs={6} md={6}>

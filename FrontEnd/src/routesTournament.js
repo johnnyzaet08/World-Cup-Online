@@ -8,18 +8,24 @@ const tournamentRoutes = [
     name: "View Matches",
     component: viewMatches,
     layout: "/admin/viewtournament",
+    user: true,
+    admin: true,
   },
   {
     path: "/viewranking",
     name: "View Ranking",
     component: viewRanking,
     layout: "/admin/viewtournament",
+    user: true,
+    admin: true,
   },
   {
     path: "/createMatch",
     name: "Create Match",
     component: createMatch,
     layout: "/admin/viewtournament",
+    user: false,
+    admin: true,
   },
 ];
 

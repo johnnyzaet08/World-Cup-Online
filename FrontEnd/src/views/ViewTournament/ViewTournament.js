@@ -14,27 +14,17 @@ const useStyles = makeStyles(styles);
 
 export default function ViewTournament() {
   const classes = useStyles();
-  const [cacheData, setCacheData] = useState();
-
-  const getCache = () => {
-    caches.open("TournamentID").then((cache) => {
-      cache.match("/admin/viewtournament/").then((response) => {
-        response.json().then((dataResponse) => {
-          setCacheData(dataResponse);
-        });
-      })
-    });
-  };
+  const [tournamentID, setTournamentID] = useState();
 
   useEffect(() => {
-    getCache();
+    setTournamentID(sessionStorage.getItem("TournamentID"));
   });
 
   return (
     <div className={classes.mainPanel}>
         <Card>
           <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Tournament ID: {cacheData}</h4>
+            <h4 className={classes.cardTitleWhite}>Tournament ID: {tournamentID}</h4>
             <p className={classes.cardCategoryWhite}>
               Here is a subtitle for this table
             </p>

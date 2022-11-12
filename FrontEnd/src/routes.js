@@ -21,6 +21,8 @@ const dashboardRoutes = [
     component: DashboardPage,
     layout: "/admin",
     dashboard: true,
+    user: true,
+    admin: true,
   },
   {
     path: "/creatematch",
@@ -29,6 +31,8 @@ const dashboardRoutes = [
     component: CreateMatch,
     layout: "/admin",
     dashboard: true,
+    user: false,
+    admin: true,
   },
   {
     path: "/createtournament",
@@ -37,6 +41,8 @@ const dashboardRoutes = [
     component: CreateTournament,
     layout: "/admin",
     dashboard: true,
+    user: false,
+    admin: true,
   },
   {
     path: "/viewtournament",

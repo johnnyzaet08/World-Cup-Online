@@ -54,43 +54,55 @@ export default function Dashboard() {
   const Description = tournaments;
   const Index = tournamentsID;
   const handleInputChange = (i) => {
-    const data = new Response(JSON.stringify(Index[i]));
-    caches.open("TournamentID").then((cache) => {
-      cache.put(window.location.pathname, data);
-    });
+    sessionStorage.setItem("TournamentID", Index[i]);
     history.push({
         pathname: '/admin/viewtournament/',
     });
+  };
+  const addButton = () => {
+    if(sessionStorage.getItem("Type") === "admin"){
+      return(
+        <CardFooter>
+          <Button color="primary">Add Match</Button>
+        </CardFooter>
+      )
+    }else{
+      return null;
+    }
+  };
+  if (sessionStorage.getItem("Verified") !== "true"){
+    alert("Error al inicio de sesion");
+    history.push("/auth/login-page");
   }
-  if (isLoading) {
+  else if (isLoading) {
     return <div className="CreateTournament">Loading...</div>;
   }
-  return (
-    <div>
-      <GridContainer>
-      {Description.map((data,i) =>{
-        return(
-          <GridItem xs={12} sm={6} md={3} key={i}>
-            <Card>
-              <CardHeader color="warning" stats icon>
-                <CardImages profile>
-                  <img src={avatar} alt="avatar" />
-                </CardImages>
-              </CardHeader>
-              <CardBody>
-                <h3>{data}</h3>
-              </CardBody>
-              <CardFooter>
-                <Button color="primary" onClick={(event) => handleInputChange(i,event)}>View Tournament</Button>
-              </CardFooter>
-              <CardFooter>
-                <Button color="primary">Add Match</Button>
-              </CardFooter>
-            </Card>
-          </GridItem>
-        );
-      })}
-      </GridContainer>
-    </div>
-  );
+  else{
+    return (
+      <div>
+        <GridContainer>
+        {Description.map((data,i) =>{
+          return(
+            <GridItem xs={12} sm={6} md={3} key={i}>
+              <Card>
+                <CardHeader color="warning" stats icon>
+                  <CardImages profile>
+                    <img src={avatar} alt="avatar" />
+                  </CardImages>
+                </CardHeader>
+                <CardBody>
+                  <h3>{data}</h3>
+                </CardBody>
+                <CardFooter>
+                  <Button color="primary" onClick={(event) => handleInputChange(i,event)}>View Tournament</Button>
+                </CardFooter>
+                {addButton()}
+              </Card>
+            </GridItem>
+          );
+        })}
+        </GridContainer>
+      </div>
+    );
+  }
 }
