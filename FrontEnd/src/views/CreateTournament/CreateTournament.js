@@ -45,6 +45,17 @@ export default function CreateTournament() {
 
   const childRef = createRef(null);
 
+  const radioOptions = [
+    {
+      value: "Selection",
+      label: "Selections",
+    },
+    {
+      value: "Local",
+      label: "Local",
+    },
+  ]
+
   const [isLoading, setLoading] = useState(true);
   const [tName, setTName] = useState("");
   const [initialDate, setIDate] = useState(null);
@@ -55,22 +66,17 @@ export default function CreateTournament() {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
-    getTeams();
+    getLocalTeams();
   }, []);
 
 // *************************************************************
 // *********************** GET DATA ****************************
-const getTeams = () => {
+const getLocalTeams = () => {
   axios.get('http://localhost:5000/getLocalTeams')
               .then(response => {
                 let temp = response.data.ELocal;
                 console.log("TEMP VALUE:", temp);
-                let tempArray = [];
-                for(let i = 0; i<temp.length; i++){
-                  tempArray[i] = temp[i][0];
-                }
-                console.log("TEAMS LIST AT CT:", tempArray);
-                setTeams(tempArray);
+                setTeams(temp);
                 setLoading(false);
               })
               .catch(error => {
@@ -85,11 +91,11 @@ const getTeams = () => {
   };
 
   const handleInitialDateChange = (event) => {
-    setIDate(new Date(event).toDateString());
+    setIDate(new Date(event));
   };
 
   const handleEndDateChange = (event) => {
-    setEDate(new Date(event).toDateString());
+    setEDate(new Date(event));
   };
 
   const handleTournamentTypeChange = (event) => {
@@ -122,7 +128,7 @@ const getTeams = () => {
   const handleClick = async (event) => {
     event.preventDefault();
 
-    childRef.current.getSelected();
+    //childRef.current.getSelected();
     
     let tournamentTeams="";
     for(let i=0;i<teams.length;i++){
@@ -228,9 +234,17 @@ const getTeams = () => {
                 <GridItem xs={12} sm={12} md={12}>
                   <br></br>
                   <ControlledRadioButtonsGroup 
-                    id="controlled-radio-buttons"
+                    /*id="controlled-radio-buttons"
                     value={tournamentType}
-                    onChange={(event) => handleTournamentTypeChange(event)}
+                    handleChange={(event) => handleTournamentTypeChange(event)}*/
+                    options={radioOptions}
+                    labelText="Tournament Type"
+                    row={true}
+                    value={tournamentType}
+                    onChange={(type) => handleTournamentTypeChange(type)}
+                    formControlProps={{
+                      fullWidth: true,
+                    }}
                   />
                 </GridItem>
               </GridContainer>

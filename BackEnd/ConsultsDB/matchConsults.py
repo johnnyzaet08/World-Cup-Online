@@ -27,15 +27,24 @@ def createMatchDB(request):
 
 def getMatchsDB(idTournament):
     
-    print(idTournament)
     cursor= mysql.connection.cursor() 
-    cursor.execute('''SELECT * FROM matchs WHERE _idTournament=%s''',[str(idTournament)])
+    cursor.execute('''SELECT * FROM matchs WHERE _idTournament=%s''',[idTournament])
     tournament = cursor.fetchall()
-    print(tournament)
     load={}
-    i=0
+    load["Matchs"] = []
     for tournamentins in tournament:
-        load[i]=tournamentins
-        i=i+1
+        load["Matchs"].append(tournamentins)
+
+    return load
+
+def getAllMatchsDB():
+    
+    cursor= mysql.connection.cursor() 
+    cursor.execute('''SELECT * FROM matchs''')
+    tournament = cursor.fetchall()
+    load={}
+    load["Matchs"] = []
+    for tournamentins in tournament:
+        load["Matchs"].append(tournamentins)
 
     return load

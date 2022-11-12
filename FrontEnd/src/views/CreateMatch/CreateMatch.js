@@ -63,11 +63,11 @@ export default function CreateMatch() {
                 .then(response => {
                   if(response.data != []){
                     let temp = response.data.Tournaments;
+                    console.log(temp);
                     let tempArray = [];
                     for(let i=0;i<temp.length;i++){
-                      tempArray[i] = temp[i][0];
+                      tempArray[i] = temp[i];
                     }
-                    
                     console.log(tempArray);
                     setTorneos(tempArray);
                   }
@@ -86,7 +86,7 @@ export default function CreateMatch() {
                 let temp =  response.data.Fases;
                 let tempArray = [];
                 for(let i=0; i<temp.length; i++){
-                  tempArray[i] = temp[i][0];
+                  tempArray[i] = temp[i];
                 }
                 console.log("FASES:", tempArray);
                 setFases(response.data.Fases);
@@ -102,7 +102,7 @@ export default function CreateMatch() {
                     let temp =  response.data.Teams;
                     let tempArray = [];
                     for(let i=0; i<temp.length; i++){
-                      tempArray[i] = temp[i][0];
+                      tempArray[i] = temp[i];
                     }
                     console.log("EQUIPOS:", tempArray);
                     setTeams(tempArray);

@@ -45,6 +45,17 @@ def getTournaments():
 
     return load
 
+def getTournamentID_db(name):
+
+    cursor= mysql.connection.cursor() 
+    cursor.execute('''SELECT _id FROM tournament WHERE name=%s''',[name])
+    id = cursor.fetchone()
+    load={"_id": 0}
+    load['_id']=id
+
+    return load
+
+
 def getFase(id):
 
     cursor= mysql.connection.cursor() 

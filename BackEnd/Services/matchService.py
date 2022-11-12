@@ -25,3 +25,13 @@ Service complete
 def getMatschs(idTournament):
     matchs=getMatchsDB(idTournament)
     return matchs
+
+"""
+
+Service complete 
+
+"""
+@app.route('/getAllMatchs/', methods = ['GET'])
+def getAllMatschs():
+    matchs=getAllMatchsDB()
+    return matchs
