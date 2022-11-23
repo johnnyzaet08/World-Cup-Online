@@ -22,7 +22,7 @@ const simpleNavbarStyle = () => ({
   item: {
     position: "right",
     display: "block",
-    paddingLeft: "100px",
+    paddingLeft: "50px",
     textDecoration: "none",
     "&:selected":{
       color: primaryColor[0],
@@ -34,11 +34,11 @@ const simpleNavbarStyle = () => ({
   itemLink: {
     width: "auto",
     transition: "all 300ms linear",
-    margin: "10px 15px 0",
-    borderRadius: "8%",
+    margin: "5px 10px 5px",
+    borderRadius: "15%",
     position: "relative",
     display: "block",
-    padding: "10px 15px",
+    padding: "center",
     backgroundColor: grayColor[3],
     ...defaultFont,
   },
