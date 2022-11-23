@@ -1,6 +1,6 @@
 import viewMatches from "views/ViewTournament/ViewMatches/ViewMatches.js";
 import viewRanking from "views/ViewTournament/ViewRanking/ViewRanking.js";
-import createMatch from "views/CreateMatch/CreateMatch.js";
+import matchResult from "views/ViewTournament/MatchResult/MatchResult.js";
 
 const tournamentRoutes = [
   {
@@ -20,9 +20,9 @@ const tournamentRoutes = [
     admin: true,
   },
   {
-    path: "/createMatch",
-    name: "Create Match",
-    component: createMatch,
+    path: "/matchresult",
+    name: "Match Result",
+    component: matchResult,
     layout: "/admin/viewtournament",
     user: false,
     admin: true,

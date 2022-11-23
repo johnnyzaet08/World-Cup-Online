@@ -37,6 +37,21 @@ const styles = {
       lineHeight: "1",
     },
   },
+  cardTitleWhiteAux: {
+    color: "#0818a7",
+    marginTop: "0px",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: "0px",
+    textDecoration: "none",
+    "& small": {
+      color: "#777",
+      fontSize: "65%",
+      fontWeight: "400",
+      lineHeight: "1",
+    },
+  },
 };
 
 const useStyles = makeStyles(styles);
@@ -47,23 +62,34 @@ export default function TableList() {
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
+          <CardBody>
+            <h4 className={classes.cardTitleWhiteAux}>My position</h4>
+            <Table
+              tableHeaderColor="primary"
+              tableHead={["Ranking", "Username", "Points"]}
+              tableData={[
+                ["Dakota Rice", "Niger", "Oud-Turnhout"],
+              ]}
+            />
+          </CardBody>
+        </Card>
+      </GridItem>
+      <GridItem xs={12} sm={12} md={12}>
+        <Card>
           <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Simple Table</h4>
+            <h4 className={classes.cardTitleWhite}>Global Ranking</h4>
             <p className={classes.cardCategoryWhite}>
-              Here is a subtitle for this table
+              Here you can see the global ranking of this tournament
             </p>
           </CardHeader>
           <CardBody>
             <Table
               tableHeaderColor="primary"
-              tableHead={["Name", "Country", "City", "Salary"]}
+              tableHead={["Ranking", "Username", "Points"]}
               tableData={[
-                ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"],
-                ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
-                ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"],
-                ["Philip Chaney", "Korea, South", "Overland Park", "$38,735"],
-                ["Doris Greene", "Malawi", "Feldkirchen in Kärnten", "$63,542"],
-                ["Mason Porter", "Chile", "Gloucester", "$78,615"],
+                ["Dakota Rice", "Niger", "Oud-Turnhout"],
+                ["Minerva Hooper", "Curaçao", "Sinaai-Waas"],
+                ["Sage Rodriguez", "Netherlands", "Baileux"],
               ]}
             />
           </CardBody>
