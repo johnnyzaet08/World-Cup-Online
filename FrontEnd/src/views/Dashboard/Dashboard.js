@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+//import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import React from "react";
 
 // react plugin for creating charts
 // @material-ui/core
@@ -13,12 +14,13 @@ import CardBody from "components/Card/CardBody.js";
 import CardImages from "components/Card/CardImages";
 import CardFooter from "components/Card/CardFooter.js";
 import Button from "components/CustomButtons/Button.js";
-import axios from "axios";
 import avatar from "assets/img/copa.png";
+//import axios from "axios";
 
 export default function Dashboard() {
   
   const history = useHistory();
+  /*
   const [
     isLoading, 
     setLoading] = useState(true);
@@ -32,6 +34,8 @@ export default function Dashboard() {
     getTournaments();
     getTournamentsID();
   }, []);
+  */
+ /*
   const getTournaments = () => {
     axios.get('http://localhost:5000/getTournament')
                 .then(response => {
@@ -56,9 +60,12 @@ export default function Dashboard() {
                   console.error('There was an error!', error);
                 });
     }
-  
-  const Description = tournaments;
-  const Index = tournamentsID;
+  */
+  //const Description = tournaments;
+  //const Index = tournamentsID;
+  const Description = ["ID-1","ID-2","ID-3","ID-4","ID-5"];
+  const Index = ["ID1","ID2","ID3","ID4","ID5"];
+
   const handleInputChange = (i) => {
     sessionStorage.setItem("TournamentID", Index[i]);
     history.push({
@@ -79,10 +86,11 @@ export default function Dashboard() {
   if (sessionStorage.getItem("Verified") !== "true"){
     alert("Error al inicio de sesion");
     history.push("/auth/login-page");
-  }
+  }/*
   else if (isLoading) {
     return <div className="CreateTournament">Loading...</div>;
   }
+  */
   else{
     return (
       <div>

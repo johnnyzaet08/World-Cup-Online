@@ -10,7 +10,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter";
 import Button from '@mui/material/Button';
-import {v4 as uuidv4} from 'uuid';
+import axios from "axios";
 
 const styles = {
   cardCategoryWhite: {
@@ -42,13 +42,20 @@ const styles = {
   },
 };
 
+function generateUID() {
+  var uid = (Math.random() * 46656) | 0;
+  uid = ("000" + uid.toString(36)).slice(-3);
+  return uid;
+}
+
 const useStyles = makeStyles(styles);
-const myuuid = uuidv4();
+
 
 export default function PrivateLeague() {
     const classes = useStyles();
     const [tournamentID, setTournamentID] = useState();
     const [user, setUser] = useState("");
+    const myuuid = (tournamentID+generateUID()).toUpperCase();
 
     useEffect(() => {
       setUser(sessionStorage.getItem("User"));
@@ -66,7 +73,30 @@ export default function PrivateLeague() {
         json._idTournament = tournamentID;
         json._idPrivateTournament = myuuid;
         console.log(json);
-    };
+
+        const headers = {
+          "Access-Control-Allow-Origin": "*",
+    
+          "Access-Control-Allow-Headers":
+            "Origin, X-Requested-With, Content-Type, Accept",
+    
+          "Content-Type": "application/json",
+        };
+        let validate="False"
+        await axios
+        .post("http://localhost:5000/createPrivateLeague", json, { headers })
+        .then((response) => {
+          if (response){
+            validate="True"
+          }})
+        .catch((error) => console.error("There was an error!", error));
+        console.log(validate)
+        //Si ya esta en unido a un liga privada no puede crear una  
+        if (validate=="True"){
+          alert("Ya esta unido a una liga privada para este torneo");
+          history.push("/admin/viewtournament/createPrivateLeague");
+        }
+      };
     return (
     <GridContainer>
         <GridItem xs={12} sm={12} md={12}>

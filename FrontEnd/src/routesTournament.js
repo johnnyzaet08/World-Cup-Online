@@ -42,7 +42,7 @@ const tournamentRoutes = [
     component: viewRanking,
     layout: "/admin/viewtournament",
     user: true,
-    admin: false,
+    admin: true,
   },
   {
     path: "/joinPrivateLeague",
@@ -50,7 +50,7 @@ const tournamentRoutes = [
     component: joinPrivateLeague,
     layout: "/admin/viewtournament",
     user: true,
-    admin: false,
+    admin: true,
   },
 ];
 
