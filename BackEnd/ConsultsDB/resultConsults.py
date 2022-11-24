@@ -62,7 +62,7 @@ def createResultDB(request):
 
     cursor.close()
     print(_idTournament)
-    "Aqui se hace la llamada al actualizar."
+
     insertPointsDB(_idPartido,_idTournament)
     return "Done"
 
@@ -128,3 +128,11 @@ def setLigaDB(request):
     cursor.execute('''UPDATE results SET _idLiga=%s WHERE username=%s && _idTournament=%s''',[_idLiga,username,_idTournament])
     mysql.connection.commit()
     return "Done"
+
+def getLigaDB(username,_idTournament):
+
+    cursor= mysql.connection.cursor()
+    cursor.execute('''SELECT _idLiga FROM results WHERE username=%s && _idTournament=%s''',[username,_idTournament])
+    found = cursor.fetchone()
+
+    return found

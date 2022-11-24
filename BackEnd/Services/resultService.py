@@ -36,6 +36,22 @@ def setLiga():
 
     setLigaDB(request)
 
-
     return "Done"
+
+"""
+
+Service complete
+
+"""
+@app.route('/getLiga/<username>,<_idTournament>', methods = ['GET'])
+def getLiga(username,_idTournament):
+
+    response=getLigaDB(username,_idTournament)
+    userLiga={}
+    if response:
+        for id in response:
+            userLiga['idLiga']=id
+
+
+    return userLiga
 
