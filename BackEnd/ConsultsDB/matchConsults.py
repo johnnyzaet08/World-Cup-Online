@@ -9,7 +9,7 @@ Service Complete
 """
 def createMatchDB(request):
 
-    _id = request.json['_id']
+    _id='[value-1]'
     date= request.json['date']
     time= request.json['time']
     fase=request.json['fase']

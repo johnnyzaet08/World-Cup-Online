@@ -9,10 +9,10 @@ Service complete
 @app.route('/createPools', methods = ['POST'])
 def createPools():
 
-    createPoolDB(request)
+    response=createPoolDB(request)
 
 
-    return "Done"
+    return response
 
 """
 

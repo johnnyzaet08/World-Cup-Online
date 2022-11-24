@@ -4,7 +4,7 @@ mysql=MYSQL
 
 def createTournamentsDB(request):
 
-    _id= request.json['_id']
+    _id='[value-1]'
     name = request.json['name']
     startDate = request.json['startDate']
     endDate= request.json['endDate']

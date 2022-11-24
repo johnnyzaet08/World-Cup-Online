@@ -68,7 +68,6 @@ Service complete
 @app.route('/createTournaments', methods = ['POST'])
 def createTournaments():
 
-    _id= request.json['_id']
     name = request.json['name']
     startDate = request.json['startDate']
     endDate= request.json['endDate']

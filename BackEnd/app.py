@@ -17,6 +17,7 @@ from Services.userService import *
 from Services.tournamentService import *
 from Services.teamService import *
 from Services.poolService import *
+from Services.resultService import *
 
 
 
