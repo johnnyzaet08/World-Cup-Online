@@ -144,6 +144,7 @@ def getRankingDB(username,_idTournament):
     found= cursor.fetchall()
     load={}
     load['Ranking Global']=[]
+    load['UserView']=[]
     for pool in found:
         
         cursor.execute('''SELECT users.username AS username, users.firstname AS firstname, users.lastname AS lastname, results.pts AS pts FROM users INNER JOIN results ON users.username=%s && results.username=%s && results._idTournament=%s''',[pool[0],pool[0],_idTournament])
@@ -155,6 +156,7 @@ def getRankingDB(username,_idTournament):
             print(index)
             if(index2[0]==username):
                 load['UserPosition']=(position+1)
+                load['UserView'].append(index2)
             else:
                 position=position+1
             
@@ -170,6 +172,7 @@ def getRankingPrivateDB(username,_idTournament,_idLiga):
     found= cursor.fetchall()
     load={}
     load['Ranking Privado']=[]
+    load['UserView']=[]
     for pool in found:
         
         cursor.execute('''SELECT users.username AS username, users.firstname AS firstname, users.lastname AS lastname, results.pts AS pts FROM users INNER JOIN results ON users.username=%s && results.username=%s && results._idLiga=%s''',[pool[0],pool[0],_idLiga])
@@ -181,6 +184,7 @@ def getRankingPrivateDB(username,_idTournament,_idLiga):
             print(index)
             if(index2[0]==username):
                 load['UserPosition']=(position+1)
+                load['UserView'].append(index2)
             else:
                 position=position+1
             
