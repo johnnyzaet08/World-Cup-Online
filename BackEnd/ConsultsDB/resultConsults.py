@@ -142,20 +142,22 @@ def getRankingDB(username,_idTournament):
     cursor= mysql.connection.cursor()
     cursor.execute('''SELECT username,pts FROM results WHERE _idTournament =%s ORDER BY pts DESC''',[_idTournament])
     found= cursor.fetchall()
-
     load={}
     load['Ranking Global']=[]
-
     for pool in found:
-        load['Ranking Global'].append(pool)
+        
+        cursor.execute('''SELECT users.username AS username, users.firstname AS firstname, users.lastname AS lastname, results.pts AS pts FROM users INNER JOIN results ON users.username=%s && results.username=%s && results._idTournament=%s''',[pool[0],pool[0],_idTournament])
+        found= cursor.fetchall()
+        load['Ranking Global'].append(found)
     position=0
     for index in load['Ranking Global']:
-        
-        if(index[0]==username):
-            load['UserPosition']=(position+1)
-        else:
-            position=position+1
-        
+        for index2 in index: 
+            print(index)
+            if(index2[0]==username):
+                load['UserPosition']=(position+1)
+            else:
+                position=position+1
+            
 
     
     cursor.close()
@@ -166,20 +168,22 @@ def getRankingPrivateDB(username,_idTournament,_idLiga):
     cursor= mysql.connection.cursor()
     cursor.execute('''SELECT username,pts FROM results WHERE _idTournament =%s && _idLiga=%s ORDER BY pts DESC''',[_idTournament,_idLiga])
     found= cursor.fetchall()
-
     load={}
     load['Ranking Privado']=[]
-
     for pool in found:
-        load['Ranking Privado'].append(pool)
+        
+        cursor.execute('''SELECT users.username AS username, users.firstname AS firstname, users.lastname AS lastname, results.pts AS pts FROM users INNER JOIN results ON users.username=%s && results.username=%s && results._idLiga=%s''',[pool[0],pool[0],_idLiga])
+        found= cursor.fetchall()
+        load['Ranking Privado'].append(found)
     position=0
     for index in load['Ranking Privado']:
-        
-        if(index[0]==username):
-            load['UserPosition']=(position+1)
-        else:
-            position=position+1
-        
+        for index2 in index: 
+            print(index)
+            if(index2[0]==username):
+                load['UserPosition']=(position+1)
+            else:
+                position=position+1
+            
 
     
     cursor.close()
