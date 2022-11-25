@@ -53,6 +53,7 @@ const useStyles = makeStyles(styles);
 
 export default function PrivateLeague() {
   const classes = useStyles();
+  
   const [tournamentID, setTournamentID] = useState();
   const [user, setUser] = useState("");
   const [privateCode, setPrivateCode] = useState("1");
@@ -68,8 +69,8 @@ export default function PrivateLeague() {
     event.preventDefault()
     const json = {
         "_idPrivateTournament":"",
-        '_idTournament':"",
-        '" Username "': "",
+        "_idTournament":"",
+        "Username": "",
     };
     json.Username = user;
     json._idTournament = tournamentID;
@@ -89,14 +90,14 @@ export default function PrivateLeague() {
     .post("http://localhost:5000/createPrivateLeague", json, { headers })
     .then((response) => {
       if (response){
-        validate="True"
+        validate="True";
       }})
     .catch((error) => console.error("There was an error!", error));
     console.log(validate)
     //Si ya esta en unido a un liga privada no puede crear una  
     if (validate=="True"){
-      alert("Ya esta unido a una liga privada para este torneo");
-      history.push("/admin/viewtournament/createPrivateLeague");
+      alert("Se ha creado exitosamente la liga privada.");
+      window.location.reload(false);
     }
   };
   if(privateCode == "1"){

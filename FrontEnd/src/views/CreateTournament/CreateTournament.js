@@ -217,6 +217,31 @@ const getLocalTeams = () => {
     if(json.startDate>json.endDate){
       validatePost=false
       alert("La fecha de inicio no puede ser mayor a la fecha de finalización")   
+    }
+
+    let localDate = new Date().toLocaleDateString(); //Obtiene Fecha actual
+    /*********** Compara el año ingresado con el año actual ****************/
+    if(Number(json.startDate.substring(6,10))>=Number(localDate.substring(6,10))){
+      /*********** Compara el mes ingresado con el mes actual ****************/
+      if(Number(json.startDate.substring(3,5))>=Number(localDate.substring(3,5))){
+        /*********** Compara el día ingresado con el día actual ****************/
+        if(Number(json.startDate.substring(0,2))>=Number(localDate.substring(0,2))){
+          console.log("OK!");
+        }
+        else{
+          validatePost=false;
+          alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
+        }
+      }
+      else{
+        validatePost=false;
+        alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
+      }
+    }
+
+    else{
+      validatePost=false;
+      alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
     }   
     if(tournamentTeams.length<2){
       validatePost=false

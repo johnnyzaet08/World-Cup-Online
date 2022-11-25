@@ -36,7 +36,7 @@ export default function Quiniela(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
-  const { matchID, teamA, teamB, playersA, playersB } = props;
+  const { matchID, teamA, teamB, playersA, playersB, isAdmin } = props;
 
   const all = playersA.concat(playersB);
 
@@ -59,12 +59,8 @@ export default function Quiniela(props) {
   const [teamBScore, seteamBScore] = useState(0);
   const [teamAScore, seteamAScore] = useState(0);
   const [pools, setPools] = useState([]);
-  const [
-    //goalPools, 
-    setGoalPools] = useState([]);
-  const [
-    //assistPools, 
-    setAssistPools] = useState([]);
+  const [goalPools, setGoalPools] = useState([]);
+  const [assistPools, setAssistPools] = useState([]);
 
   // *************************************************************
   // *********************** GET DATA ****************************
@@ -87,6 +83,7 @@ export default function Quiniela(props) {
     await axios.get('http://localhost:5000/getGoalPools')
                 .then(response => {
                   setGoalPools(response.data.GoalsPools);
+                  console.log(goalPools);
                 })
                 .catch(error => {
                   console.error('There was an error!', error);
@@ -100,6 +97,7 @@ export default function Quiniela(props) {
     await axios.get('http://localhost:5000/getAssistPools')
                 .then(response => {
                   setAssistPools(response.data.AssistPools);
+                  console.log(assistPools);
                 })
                 .catch(error => {
                   console.error('There was an error!', error);
@@ -134,6 +132,7 @@ export default function Quiniela(props) {
     let assistersA = sessionStorage.getItem("assistA").split(',');
     let assistersB = sessionStorage.getItem("assistB").split(',');
 
+    let userName = sessionStorage.getItem("User");
     const mvpFinal = sessionStorage.getItem("MVP").split(',');
 
     const json = {
@@ -146,7 +145,8 @@ export default function Quiniela(props) {
       goalB: scorersB,
       assistA: assistersA,
       assistB: assistersB,
-      MVP: mvpFinal
+      MVP: mvpFinal,
+      username: userName
     }
     console.log(json)
     
@@ -156,9 +156,50 @@ export default function Quiniela(props) {
       'Content-Type': 'application/json'
     }
     
-    await axios.post('http://localhost:5000/createPools', json, { headers })
-    .then(response => console.log(response))
-    .catch(error => console.error('There was an error!', error));
+    if(!isAdmin){
+      await axios.post('http://localhost:5000/createPools', json, { headers })
+      .then(response => {
+        if(response){
+          alert("El pronóstico ha sido creado exitosamente.");
+          console.log(response);  
+          window.location.reload(false);
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          if(error.response.status === 500){
+            alert("Parece que ha ocurrido un error con el servidor. Intentelo nuevamente más tarde.");
+            console.log(error.response.status);
+          }
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+      });
+    }
+    else{
+      await axios.post('http://localhost:5000/postResultsAdmin/', json, { headers })
+      .then(response => {
+        if(response){
+          alert("El resultado ha sido cargado exitosamente.");
+          console.log(response);  
+          window.location.reload(false);
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          if(error.response.status === 500){
+            alert("Parece que ha ocurrido un error con el servidor. Intentelo nuevamente más tarde.");
+            console.log(error.response.status);
+          }
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+      });
+    }
 
     await callPools();
     await callAssistPools();
@@ -291,4 +332,5 @@ Quiniela.propTypes = {
   teamB: PropTypes.string,
   playersA: PropTypes.array,
   playersB: PropTypes.array,
+  isAdmin: PropTypes.bool,
 };

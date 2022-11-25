@@ -11,6 +11,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter";
 import Button from '@mui/material/Button';
 import CustomInput from "components/CustomInput/CustomInput.js";
+import axios from "axios";
 
 const styles = {
   cardCategoryWhite: {
@@ -57,16 +58,39 @@ export default function JoinPrivateLeague() {
       setPrivateCode(sessionStorage.getItem("PrivateLeagueCode"));
     });
     const handleClick = async (event) => {
-        event.preventDefault()
-        const json = {
-            "_idPrivateTournament":"",
-            '_idTournament':"",
-            '" Username "': "",
-        };
-        json.Username = user;
-        json._idTournament = tournamentID;
-        json._idPrivateTournament = tournamentPrivateID;
-        console.log(json);
+      event.preventDefault()
+      const json = {
+          "_idPrivateTournament":"",
+          '_idTournament':"",
+          '" Username "': "",
+      };
+      json.Username = user;
+      json._idTournament = tournamentID;
+      json._idPrivateTournament = tournamentPrivateID;
+      console.log(json);
+
+      const headers = {
+        "Access-Control-Allow-Origin": "*",
+  
+        "Access-Control-Allow-Headers":
+          "Origin, X-Requested-With, Content-Type, Accept",
+  
+        "Content-Type": "application/json",
+      };
+
+      let validate=false
+      await axios
+      .post("http://localhost:5000/joinPrivateLeague", json, { headers })
+      .then((response) => {
+        if (response){
+          validate=true;
+        }})
+      .catch((error) => console.error("There was an error!", error));
+      console.log(validate)
+      if (validate){
+        alert("Ahora pertenece a una liga privada.");
+        window.location.reload(false);
+      }
     };
 
     const handleChange = (event) => {

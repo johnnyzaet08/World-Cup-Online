@@ -22,12 +22,13 @@ export default function AlertDialog() {
     event.preventDefault()
     const json = {
         "_idPrivateTournament":"",
-        '_idTournament':"",
-        '" Username "': "",
+        "_idTournament":"",
+        "Username": "",
     };
+    console.log("PLCode:",sessionStorage.getItem("PrivateLeagueCode"));
     json.Username = sessionStorage.getItem("User");
     json._idTournament = sessionStorage.getItem("TournamentID");
-    json._idPrivateTournament = "1";
+    json._idPrivateTournament = sessionStorage.getItem("PrivateLeagueCode");
     console.log(json);
     const headers = {
         "Access-Control-Allow-Origin": "*",
@@ -39,7 +40,7 @@ export default function AlertDialog() {
       };
       let validate="False"
       await axios
-      .post("http://localhost:5000/LeavePrivateLeague", json, { headers })
+      .put("http://localhost:5000/leavePrivateLeague/", json, { headers })
       .then((response) => {
         if (response){
           validate="True"
@@ -48,7 +49,9 @@ export default function AlertDialog() {
       console.log(validate)
       //Si ya esta en unido a un liga privada no puede crear una  
       if (validate=="True"){
-        alert("No esta unido a ninguna liga privada");
+        alert("Ya no pertenece a ninguna liga privada.");
+        setOpen(false);
+        window.location.reload(false);
         //history.push("/admin/viewtournament/createPrivateLeague");
       }
   };

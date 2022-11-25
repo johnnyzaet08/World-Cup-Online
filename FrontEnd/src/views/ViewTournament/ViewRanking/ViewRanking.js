@@ -9,6 +9,7 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { useEffect } from "react";
+import axios from "axios";
 
 const styles = {
   cardCategoryWhite: {
@@ -57,6 +58,7 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
+/*
 const data = {
   "Ranking Global": [
       [
@@ -102,14 +104,31 @@ const data = {
       ]
   ]
 }
-
+*/
 export default function TableList() {
   const classes = useStyles();
   const [dataTable, setDataTable] = useState([[]]);
   const [userTable, setUserTable] = useState([[]]);
   
+  // *************************************************************
+  // *********************** GET DATA ****************************
+  const callRanking = async () => {
+    let tempTID = sessionStorage.getItem("TournamentID");
+    let tempUN = sessionStorage.getItem("User");
+    await axios.get('http://localhost:5000/getRanking/'+tempUN+","+tempTID)
+                .then(response => {
+                  console.log("RANKING:", response.data["Ranking Global"]);
+                  renderer(response.data);
+                })
+                .catch(error => {
+                console.error('There was an error!', error);
+                });
+  }
+  useEffect(async () => {
+    await callRanking();
+  },[])
 
-  useEffect(() => {
+  const renderer = (data) => {
     var auxData = []
     data["Ranking Global"].map((element, index) => {
       var auxElement = [index+1];
@@ -126,7 +145,7 @@ export default function TableList() {
     });
     auxUser.push(auxElementUser);
     setUserTable(auxUser);
-  }, []);
+  }
 
   return (
     <GridContainer>
@@ -161,4 +180,5 @@ export default function TableList() {
       </GridItem>
     </GridContainer>
   );
+  
 }

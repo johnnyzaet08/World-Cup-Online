@@ -11,6 +11,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter";
 import AlertDialog from "components/AlertDialog/AlertDialog";
 import { useEffect } from "react";
+import axios from "axios"; 
 
 const styles = {
   cardCategoryWhite: {
@@ -59,59 +60,33 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const data = {
-  "Ranking Privado": [
-      [
-          [
-            "David",
-            "David",
-            "Pereira",
-            100
-          ]
-      ],
-      [
-          [
-            "F1",
-            "Fanatico 1",
-            "Fanatico 1",
-            100
-          ]
-      ],
-      [
-          [
-            "Aldox",
-            "Aldo",
-            "Cambronero",
-            90
-          ]
-      ],
-      [
-          [
-            "F2",
-            "Fanatico 2",
-            "Fanatico 2",
-            75
-          ]
-      ]
-  ],
-  "UserPosition": 4,
-  "UserView": [
-      [
-        "F2",
-        "Fanatico 2",
-        "Fanatico 2",
-        75
-      ]
-  ]
-}
-
 export default function TableList() {
   const classes = useStyles();
   const [dataTable, setDataTable] = useState([[]]);
   const [userTable, setUserTable] = useState([[]]);
   const [privateCode, setPrivateCode] = useState("1");
 
-  useEffect(() => {
+  // *************************************************************
+  // *********************** GET DATA ****************************
+  const callRanking = async () => {
+    let tempTID = sessionStorage.getItem("TournamentID");
+    let tempUN = sessionStorage.getItem("User");
+    let tempPLC = sessionStorage.getItem("PrivateLeagueCode");
+    await axios.get('http://localhost:5000/getRankingPrivate/'+tempUN+","+tempTID+","+tempPLC)
+                .then(response => {
+                  setPrivateCode(tempPLC);
+                  console.log("RANKING:", response.data);
+                  renderer(response.data);
+                })
+                .catch(error => {
+                console.error('There was an error!', error);
+                });
+  }
+  useEffect(async () => {
+    await callRanking();
+  },[])
+
+  const renderer = (data) => {
     
     var auxData = []
     data["Ranking Privado"].map((element, index) => {
@@ -132,7 +107,7 @@ export default function TableList() {
     setDataTable(auxData);
     setUserTable(auxUser);
     setPrivateCode(sessionStorage.getItem("PrivateLeagueCode"));
-  }, []);
+  }
 
   if(privateCode == "1"){
     return(

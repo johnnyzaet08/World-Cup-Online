@@ -273,8 +273,22 @@ export default function CreateMatch() {
     }
     if(validatePost){
       await axios.post('http://localhost:5000/createMatch', json, { headers })
-      .then(response => console.log(response))
-      .catch(error => console.error('There was an error!', error));
+      .then(response => {
+        if(response){
+          alert("El partido ha sido creado exitosamente.");
+          console.log(response);  
+          window.location.reload(false);
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.status);
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+      });
     }
   };
 
