@@ -136,3 +136,51 @@ def getLigaDB(username,_idTournament):
     found = cursor.fetchone()
 
     return found
+
+def getRankingDB(username,_idTournament):
+
+    cursor= mysql.connection.cursor()
+    cursor.execute('''SELECT username,pts FROM results WHERE _idTournament =%s ORDER BY pts DESC''',[_idTournament])
+    found= cursor.fetchall()
+
+    load={}
+    load['Ranking Global']=[]
+
+    for pool in found:
+        load['Ranking Global'].append(pool)
+    position=0
+    for index in load['Ranking Global']:
+        
+        if(index[0]==username):
+            load['UserPosition']=(position+1)
+        else:
+            position=position+1
+        
+
+    
+    cursor.close()
+    return load
+
+def getRankingPrivateDB(username,_idTournament,_idLiga):
+
+    cursor= mysql.connection.cursor()
+    cursor.execute('''SELECT username,pts FROM results WHERE _idTournament =%s && _idLiga=%s ORDER BY pts DESC''',[_idTournament,_idLiga])
+    found= cursor.fetchall()
+
+    load={}
+    load['Ranking Privado']=[]
+
+    for pool in found:
+        load['Ranking Privado'].append(pool)
+    position=0
+    for index in load['Ranking Privado']:
+        
+        if(index[0]==username):
+            load['UserPosition']=(position+1)
+        else:
+            position=position+1
+        
+
+    
+    cursor.close()
+    return load
