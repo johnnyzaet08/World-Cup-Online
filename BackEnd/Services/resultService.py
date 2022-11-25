@@ -14,6 +14,19 @@ def createResult():
 
     return "Done"
 
+
+"""
+
+Service complete
+
+"""
+@app.route('/getResultsAdmin', methods = ['GET'])
+def getResults():
+
+    results = getResultsDB()
+
+    return results
+
 """
 
 Service complete
@@ -79,3 +92,42 @@ def getRankingPrivate(username,_idTournament,_idLiga):
     
 
     return response
+
+"""
+
+Service complete
+
+"""
+@app.route('/leavePrivateLeague/', methods = ['PUT'])
+def leaveRankingPrivate():
+
+    leaveRankingPrivateDB(request)
+    
+
+    return "Done"
+
+"""
+
+Service complete
+
+"""
+@app.route('/createPrivateLeague/', methods = ['POST'])
+def createPrivateLeague():
+
+    createPrivateLeagueDB(request)
+    
+
+    return "Done"
+
+"""
+
+Service complete
+
+"""
+@app.route('/joinPrivateLeague/', methods = ['POST'])
+def joinPrivateLeague():
+
+    joinPrivateLeagueDB(request)
+    
+    return "Done"
+

@@ -17,7 +17,7 @@ def createResultDB(request):
 
     cursor= mysql.connection.cursor()
 
-    cursor.execute('''SELECT _idTorunament from matchs WHERE _id=%s''',[_idPartido])
+    cursor.execute('''SELECT _idTournament from matchs WHERE _id=%s''',[_idPartido])
     idtor=cursor.fetchone()
 
     cursor.execute('''INSERT INTO footballresults VALUES(%s,%s,%s,%s,%s,%s)''',(_id,_idPartido,winner,mvpGame,teamAScore,teamBScore))
@@ -65,6 +65,20 @@ def createResultDB(request):
 
     insertPointsDB(_idPartido,_idTournament)
     return "Done"
+
+def getResultsDB():
+
+    cursor = mysql.connection.cursor()
+    cursor.execute(''' SELECT * FROM footballresults ''')
+    results = cursor.fetchall()
+    load = {}
+    load ['Results'] = []
+
+    for resultss in results:
+        load['Results'].append(resultss)
+    
+    return load
+
 
 def insertPointsDB(_idPartido,_idTournament):
     _idLiga="1"
@@ -192,3 +206,58 @@ def getRankingPrivateDB(username,_idTournament,_idLiga):
     
     cursor.close()
     return load
+
+def leaveRankingPrivateDB(request):
+    _idPrivateTournament = request.json["_idPrivateTournament"]
+    _idTournament = request.json["_idTournament"]
+    Username = request.json["Username"]
+
+    cursor= mysql.connection.cursor()
+
+    cursor.execute('''SELECT * FROM results WHERE username=%s''',[Username])
+    idtor=cursor.fetchone()
+
+    cursor.execute(''' UPDATE results SET _idLiga=%s,pts=%s WHERE username=%s && _idLiga=%s''',["1","0", Username, _idPrivateTournament])
+
+    mysql.connection.commit()
+    cursor.close()
+
+    return "Done"
+
+def createPrivateLeagueDB(request):
+    _idPrivateTournament = request.json["_idPrivateTournament"]
+    _idTournament = request.json["_idTournament"]
+    Username = request.json["Username"]
+
+    cursor= mysql.connection.cursor()
+
+    cursor.execute(''' UPDATE results SET _idLiga=%s,pts=%s WHERE username=%s && _idTournament=%s''',[_idPrivateTournament, "0", Username, _idTournament])
+
+    mysql.connection.commit()
+    cursor.close()
+
+    return "Done"
+
+def joinPrivateLeagueDB(request):
+
+    _idPrivateTournament = request.json["_idPrivateTournament"]
+    _idTournament = request.json["_idTournament"]
+    Username = request.json["Username"]
+
+    cursor= mysql.connection.cursor()
+
+    cursor.execute(''' SELECT _id FROM results WHERE username=%s''', [Username])
+    users = cursor.fetchall()
+    print("IDs:", users)
+
+    if(len(users) == 0):
+        cursor.execute(''' INSERT INTO results (_idTournament,_idLiga, username, pts) VALUES (%s,%s,%s,%s)''', [_idTournament,_idPrivateTournament, Username,"0"])
+    else:
+        cursor.execute(''' UPDATE results SET _idLiga=%s,pts=%s WHERE username=%s && _idTournament=%s''',[_idPrivateTournament, "0", Username, _idTournament])
+
+    mysql.connection.commit()
+    cursor.close()
+
+    return "Done"
+
+
