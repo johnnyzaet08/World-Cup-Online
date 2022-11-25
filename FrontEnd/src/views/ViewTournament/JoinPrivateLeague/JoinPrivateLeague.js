@@ -80,7 +80,7 @@ export default function JoinPrivateLeague() {
 
       let validate=false
       await axios
-      .post("http://localhost:5000/joinPrivateLeague", json, { headers })
+      .post("http://localhost:5000/joinPrivateLeague/", json, { headers })
       .then((response) => {
         if (response){
           validate=true;

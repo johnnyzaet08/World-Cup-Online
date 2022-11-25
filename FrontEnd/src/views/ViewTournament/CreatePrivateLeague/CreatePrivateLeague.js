@@ -87,7 +87,7 @@ export default function PrivateLeague() {
     };
     let validate="False"
     await axios
-    .post("http://localhost:5000/createPrivateLeague", json, { headers })
+    .post("http://localhost:5000/createPrivateLeague/", json, { headers })
     .then((response) => {
       if (response){
         validate="True";

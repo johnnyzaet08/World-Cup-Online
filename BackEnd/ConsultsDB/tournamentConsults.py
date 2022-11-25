@@ -11,25 +11,32 @@ def createTournamentsDB(request):
     description= request.json['description']
     teams=request.json['teams']
     fases=request.json['fases']
-
+    _idTournament=''
     cursor= mysql.connection.cursor()
     cursor.execute('''INSERT INTO tournament VALUES(%s,%s,%s,%s,%s)''',(_id,name,startDate,endDate,description))
     mysql.connection.commit()
-    cursor.close()
+    
+
+    cursor.execute('''SELECT _id from tournament WHERE name=%s''',[name])
+    idtor=cursor.fetchone()
+
+    for idx in idtor:
+        _idTournament=idx
 
     for teamsinsert in teams:
         print(teamsinsert)
-        cursor= mysql.connection.cursor()
-        cursor.execute('''INSERT INTO teamstournament VALUES(%s,%s)''',(_id,teamsinsert))
+        
+        cursor.execute('''INSERT INTO teamstournament VALUES(%s,%s)''',(_idTournament,teamsinsert))
         mysql.connection.commit()
-        cursor.close()
+        
 
     for fasesinsert in fases:
         print(fasesinsert)
-        cursor= mysql.connection.cursor()
-        cursor.execute('''INSERT INTO fasestournament VALUES(%s,%s)''',(_id,fasesinsert))
+       
+        cursor.execute('''INSERT INTO fasestournament VALUES(%s,%s)''',(_idTournament,fasesinsert))
         mysql.connection.commit()
-        cursor.close()
+
+    cursor.close()
     return "Done"
     
 def getTournaments():

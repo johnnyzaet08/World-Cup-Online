@@ -217,7 +217,7 @@ def leaveRankingPrivateDB(request):
     cursor.execute('''SELECT * FROM results WHERE username=%s''',[Username])
     idtor=cursor.fetchone()
 
-    cursor.execute(''' UPDATE results SET _idLiga=%s,pts=%s WHERE username=%s && _idLiga=%s''',["1","0", Username, _idPrivateTournament])
+    cursor.execute(''' UPDATE results SET _idLiga=%s WHERE username=%s && _idLiga=%s''',["1",Username, _idPrivateTournament])
 
     mysql.connection.commit()
     cursor.close()
@@ -231,7 +231,7 @@ def createPrivateLeagueDB(request):
 
     cursor= mysql.connection.cursor()
 
-    cursor.execute(''' UPDATE results SET _idLiga=%s,pts=%s WHERE username=%s && _idTournament=%s''',[_idPrivateTournament, "0", Username, _idTournament])
+    cursor.execute(''' UPDATE results SET _idLiga=%s WHERE username=%s && _idTournament=%s''',[_idPrivateTournament, Username, _idTournament])
 
     mysql.connection.commit()
     cursor.close()
@@ -253,7 +253,7 @@ def joinPrivateLeagueDB(request):
     if(len(users) == 0):
         cursor.execute(''' INSERT INTO results (_idTournament,_idLiga, username, pts) VALUES (%s,%s,%s,%s)''', [_idTournament,_idPrivateTournament, Username,"0"])
     else:
-        cursor.execute(''' UPDATE results SET _idLiga=%s,pts=%s WHERE username=%s && _idTournament=%s''',[_idPrivateTournament, "0", Username, _idTournament])
+        cursor.execute(''' UPDATE results SET _idLiga=%s WHERE username=%s && _idTournament=%s''',[_idPrivateTournament, Username, _idTournament])
 
     mysql.connection.commit()
     cursor.close()

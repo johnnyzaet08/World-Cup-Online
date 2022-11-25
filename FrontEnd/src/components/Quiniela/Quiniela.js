@@ -36,7 +36,7 @@ export default function Quiniela(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
 
-  const { matchID, teamA, teamB, playersA, playersB, isAdmin } = props;
+  const { matchID, teamA, teamB, playersA, playersB } = props;
 
   const all = playersA.concat(playersB);
 
@@ -133,6 +133,7 @@ export default function Quiniela(props) {
     let assistersB = sessionStorage.getItem("assistB").split(',');
 
     let userName = sessionStorage.getItem("User");
+    let type = sessionStorage.getItem("Type");
     const mvpFinal = sessionStorage.getItem("MVP").split(',');
 
     const json = {
@@ -156,7 +157,7 @@ export default function Quiniela(props) {
       'Content-Type': 'application/json'
     }
     
-    if(!isAdmin){
+    if(type=='user'){
       await axios.post('http://localhost:5000/createPools', json, { headers })
       .then(response => {
         if(response){
@@ -179,7 +180,7 @@ export default function Quiniela(props) {
       });
     }
     else{
-      await axios.post('http://localhost:5000/postResultsAdmin/', json, { headers })
+      await axios.post('http://localhost:5000/postResultsAdmin', json, { headers })
       .then(response => {
         if(response){
           alert("El resultado ha sido cargado exitosamente.");
