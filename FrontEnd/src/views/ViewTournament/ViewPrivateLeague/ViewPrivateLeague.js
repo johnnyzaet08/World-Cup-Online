@@ -8,6 +8,8 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import CardFooter from "components/Card/CardFooter";
+import AlertDialog from "components/AlertDialog/AlertDialog";
 import { useEffect } from "react";
 
 const styles = {
@@ -58,7 +60,7 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 const data = {
-  "Ranking Global": [
+  "Ranking Privado": [
       [
           [
             "David",
@@ -107,58 +109,80 @@ export default function TableList() {
   const classes = useStyles();
   const [dataTable, setDataTable] = useState([[]]);
   const [userTable, setUserTable] = useState([[]]);
-  
+  const [privateCode, setPrivateCode] = useState("1");
 
   useEffect(() => {
+    
     var auxData = []
-    data["Ranking Global"].map((element, index) => {
+    data["Ranking Privado"].map((element, index) => {
       var auxElement = [index+1];
       element[0].map(auxData => {
         auxElement.push(auxData)
       })
       auxData.push(auxElement)
     })
-    setDataTable(auxData)
+    
     var auxUser = []
     var auxElementUser = [data.UserPosition]
     data.UserView[0].map(dataUser =>{
       auxElementUser.push(dataUser);
     });
     auxUser.push(auxElementUser);
+
+    setDataTable(auxData);
     setUserTable(auxUser);
+    setPrivateCode(sessionStorage.getItem("PrivateLeagueCode"));
   }, []);
 
-  return (
-    <GridContainer>
-      <GridItem xs={12} sm={12} md={12}>
-        <Card>
-          <CardBody>
-            <h4 className={classes.cardTitleWhiteAux}>My position</h4>
-            <Table
-              tableHeaderColor="primary"
-              tableHead={["Ranking", "Username", "Name", "Lastname", "Points"]}
-              tableData={userTable}
-            />
-          </CardBody>
-        </Card>
-      </GridItem>
-      <GridItem xs={12} sm={12} md={12}>
-        <Card>
-          <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Global Ranking</h4>
-            <p className={classes.cardCategoryWhite}>
-              Here you can see the global ranking of this tournament
-            </p>
-          </CardHeader>
-          <CardBody>
-            <Table
-              tableHeaderColor="primary"
-              tableHead={["Ranking", "Username", "Name", "Lastname", "Points"]}
-              tableData={dataTable}
-            />
-          </CardBody>
-        </Card>
-      </GridItem>
-    </GridContainer>
-  );
+  if(privateCode == "1"){
+    return(
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+              <Card>
+              <CardHeader color="primary">
+                  <h4 className={classes.cardTitleWhite}>You are not in a private league</h4>
+              </CardHeader>
+              </Card>
+          </GridItem>
+      </GridContainer>
+      )
+  }
+  else{
+    return (
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardBody>
+                <h4 className={classes.cardTitleWhiteAux}>My position</h4>
+                <Table
+                  tableHeaderColor="primary"
+                  tableHead={["Ranking", "Username", "Name", "Lastname", "Points"]}
+                  tableData={userTable}
+                />
+              </CardBody>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardHeader color="primary">
+                <h4 className={classes.cardTitleWhite}>Private League Ranking</h4>
+                <p className={classes.cardCategoryWhite}>
+                  Here you can see the private league ranking
+                </p>
+              </CardHeader>
+              <CardBody>
+                <Table
+                  tableHeaderColor="primary"
+                  tableHead={["Ranking", "Username", "Name", "Lastname", "Points"]}
+                  tableData={dataTable}
+                />
+              </CardBody>
+              <CardFooter>
+                <AlertDialog></AlertDialog>
+              </CardFooter>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      );
+  }
 }

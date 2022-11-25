@@ -16,8 +16,11 @@ export default function ViewTournament() {
   const classes = useStyles();
   const [tournamentID, setTournamentID] = useState();
 
+  //Aqui se necesita un axios para capturar el ID de la liga del torneo y del usuario
+
   useEffect(() => {
     setTournamentID(sessionStorage.getItem("TournamentID"));
+    sessionStorage.setItem("PrivateLeagueCode", "1D") //Dato capturado porfa
   });
 
   return (
@@ -25,9 +28,6 @@ export default function ViewTournament() {
         <Card>
           <CardHeader color="primary">
             <h4 className={classes.cardTitleWhite}>Tournament ID: {tournamentID}</h4>
-            <p className={classes.cardCategoryWhite}>
-              Here is a subtitle for this table
-            </p>
           </CardHeader>
           <CardFooter>
             <SimpleNavbar

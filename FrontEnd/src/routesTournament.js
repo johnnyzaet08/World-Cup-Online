@@ -1,9 +1,9 @@
 import viewMatches from "views/ViewTournament/ViewMatches/ViewMatches.js";
 import viewRanking from "views/ViewTournament/ViewRanking/ViewRanking.js";
 import matchResult from "views/ViewTournament/MatchResult/MatchResult.js";
-import createPrivateLeague from "views/CreatePrivateLeague/CreatePrivateLeague.js";
-import joinPrivateLeague from "views/JoinPrivateLeague/JoinPrivateLeague";
-import leavePrivateLeague from "views/LeavePrivateLeague/LeavePrivateLeague";
+import createPrivateLeague from "views/ViewTournament/CreatePrivateLeague/CreatePrivateLeague.js";
+import joinPrivateLeague from "views/ViewTournament/JoinPrivateLeague/JoinPrivateLeague.js";
+import viewPrivateLeague from "views/ViewTournament/ViewPrivateLeague/ViewPrivateLeague.js";
 
 const tournamentRoutes = [
   {
@@ -30,7 +30,7 @@ const tournamentRoutes = [
     user: false,
     admin: true,
   },{
-    path: "/createPrivateLeague",
+    path: "/createprivateleague",
     name: "Create Private League",
     component: createPrivateLeague,
     layout: "/admin/viewtournament",
@@ -38,29 +38,21 @@ const tournamentRoutes = [
     admin: true,
   },
   {
-    path: "/viewPrivateLeague",
+    path: "/viewprivateleague",
     name: "View Private League",
-    component: viewRanking,
+    component: viewPrivateLeague,
     layout: "/admin/viewtournament",
     user: true,
     admin: true,
   },
   {
-    path: "/joinPrivateLeague",
+    path: "/joinprivateleague",
     name: "Join Private League",
     component: joinPrivateLeague,
     layout: "/admin/viewtournament",
     user: true,
     admin: true,
   },
-  {
-    path: "/leavePrivateLeague",
-    name: "Leave Private League",
-    component: leavePrivateLeague,
-    layout: "/admin/viewtournament",
-    user: true,
-    admin: true,
-  }
 ];
 
 export default tournamentRoutes;
