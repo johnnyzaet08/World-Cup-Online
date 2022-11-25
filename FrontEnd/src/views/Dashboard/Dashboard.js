@@ -34,8 +34,7 @@ export default function Dashboard() {
     getTournaments();
     getTournamentsID();
   }, []);
-  
- 
+
   const getTournaments = () => {
     axios.get('http://localhost:5000/getTournament')
                 .then(response => {

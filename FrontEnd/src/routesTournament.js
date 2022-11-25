@@ -3,6 +3,7 @@ import viewRanking from "views/ViewTournament/ViewRanking/ViewRanking.js";
 import matchResult from "views/ViewTournament/MatchResult/MatchResult.js";
 import createPrivateLeague from "views/CreatePrivateLeague/CreatePrivateLeague.js";
 import joinPrivateLeague from "views/JoinPrivateLeague/JoinPrivateLeague";
+import leavePrivateLeague from "views/LeavePrivateLeague/LeavePrivateLeague";
 
 const tournamentRoutes = [
   {
@@ -52,6 +53,14 @@ const tournamentRoutes = [
     user: true,
     admin: true,
   },
+  {
+    path: "/leavePrivateLeague",
+    name: "Leave Private League",
+    component: leavePrivateLeague,
+    layout: "/admin/viewtournament",
+    user: true,
+    admin: true,
+  }
 ];
 
 export default tournamentRoutes;
