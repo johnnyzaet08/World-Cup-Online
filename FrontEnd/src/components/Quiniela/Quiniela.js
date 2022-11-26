@@ -156,28 +156,70 @@ export default function Quiniela(props) {
       "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
       'Content-Type': 'application/json'
     }
+
+    let validatePost=true;
+    console.log(json.goalA)
     
     if(type=='user'){
-      await axios.post('http://localhost:5000/createPools', json, { headers })
-      .then(response => {
-        if(response){
-          alert("El pronóstico ha sido creado exitosamente.");
-          console.log(response);  
-          window.location.reload(false);
-        }
-      })
-      .catch(function (error) {
-        if (error.response) {
-          if(error.response.status === 500){
-            alert("Parece que ha ocurrido un error con el servidor. Intentelo nuevamente más tarde.");
-            console.log(error.response.status);
+      if(json.winner==null){
+        validatePost=false;
+        alert("No se pudo realizar el pronóstico. Debe indicar un ganador, o empate en su defecto.")
+      }
+      else if(json.winner == "Tie" && json.teamAScore != json.teamBScore){
+        validatePost=false;
+        alert("No se pudo realizar el pronóstico. Se indicó empate pero el marcador no refleja un empate.")
+      }
+      else if(json.winner != "Tie" && json.teamAScore == json.teamBScore){
+        validatePost=false;
+        alert("No se pudo realizar el pronóstico. Se indicó un ganador pero el marcador refleja un empate.")
+      }
+      else if((json.winner == teamA && json.teamAScore < json.teamBScore) || (json.winner == teamB && json.teamAScore > json.teamBScore)){
+        validatePost=false;
+        alert("No se pudo realizar el pronóstico. El ganador y el marcador no coinciden.")
+      }
+      else if((json.teamAScore != 0 && json.goalA[0] == "") || (json.teamAScore == 0 && json.goalA[0] != "")){
+        validatePost=false;
+        alert("No se pudo realizar el pronóstico. Los goles anotados en cada equipo debe coincidir con la cantidad de anotadores.")
+      }
+      else if((json.teamBScore != 0 && json.goalB[0] == "") || (json.teamBScore == 0 && json.goalB[0] != "")){
+        validatePost=false;
+        alert("No se pudo realizar el pronóstico. Los goles anotados en cada equipo debe coincidir con la cantidad de anotadores.")
+      }
+      else if((json.teamAScore != 0 && json.assistA[0] == "") || (json.teamAScore == 0 && json.assistA[0] != "")){
+        validatePost=false;
+        alert("No se pudo realizar el pronóstico. Los goles anotados en cada equipo debe coincidir con la cantidad de asistidores.")
+      }
+      else if((json.teamBScore != 0 && json.assistB[0] == "") || (json.teamBScore == 0 && json.assistB[0] != "")){
+        validatePost=false;
+        alert("No se pudo realizar el pronóstico. Los goles anotados en cada equipo debe coincidir con la cantidad de asistidores.")
+      }
+      else if(json.MVP == 0){  
+        validatePost=false;
+        alert("No se pudo realizar el pronóstico. Debe escoger un MVP.")
+      }
+
+      if(validatePost){
+        await axios.post('http://localhost:5000/createPools', json, { headers })
+        .then(response => {
+          if(response){
+            alert("El pronóstico ha sido creado exitosamente.");
+            console.log(response);  
+            window.location.reload(false);
           }
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          console.log('Error', error.message);
-        }
-      });
+        })
+        .catch(function (error) {
+          if (error.response) {
+            if(error.response.status === 500){
+              alert("Parece que ha ocurrido un error con el servidor. Intentelo nuevamente más tarde.");
+              console.log(error.response.status);
+            }
+          } else if (error.request) {
+            console.log(error.request);
+          } else {
+            console.log('Error', error.message);
+          }
+        });
+      }
     }
     else{
       await axios.post('http://localhost:5000/postResultsAdmin', json, { headers })

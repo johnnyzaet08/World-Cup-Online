@@ -204,53 +204,73 @@ const getLocalTeams = () => {
       "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
       'Content-Type': 'application/json'
     }
+
+    let localDateArr = new Date().toLocaleDateString().split('/'); //Obtiene Fecha actual
+    let startDateArr =  json.startDate.split('/');
+    let endDateArr = json.endDate.split('/');
+
+    console.log("START DATE:", startDateArr);
+    console.log("END DATE:", endDateArr);
     
     let validatePost=true;
     if(json.name==""){
       validatePost=false
       alert("El nombre del torneo es obligatorio. Por favor ingrese un nombre de torneo") 
     }
-    if(json.startDate=="31/12/1969" & json.endDate=="31/12/1969" ){
+    else if(json.startDate=="31/12/1969" & json.endDate=="31/12/1969" ){
       validatePost=false
       alert("Debe seleccionar las fechas del torneo")     
     }
-    if(json.startDate>json.endDate){
-      validatePost=false
-      alert("La fecha de inicio no puede ser mayor a la fecha de finalización")   
+    /*********** Compara el año de inicio con el año final ****************/
+    else if(Number(startDateArr[2])==Number(endDateArr[2])){
+      /*********** Compara el mes de inicio con el mes final ****************/
+      if(Number(startDateArr[1])==Number(endDateArr[1])){
+        /*********** Compara el día d inicio con el día final ****************/
+        if(Number(startDateArr[0])>Number(endDateArr[0])){
+          validatePost=false;
+          alert("No se pudo crear el torneo: La fecha de inicio no puede ser mayor a la fecha de finalización.");
+        }
+      }
+      else if(Number(startDateArr[1])>Number(endDateArr[1])){
+        validatePost=false;
+        alert("No se pudo crear el torneo: La fecha de inicio no puede ser mayor a la fecha de finalización.");
+      }
     }
-
-    let localDate = new Date().toLocaleDateString(); //Obtiene Fecha actual
+    else if(Number(startDateArr[2])>Number(endDateArr[2])){
+      validatePost=false;
+      alert("No se pudo crear el torneo: La fecha de inicio no puede ser mayor a la fecha de finalización.");
+    }
     /*********** Compara el año ingresado con el año actual ****************/
-    if(Number(json.startDate.substring(6,10))>=Number(localDate.substring(6,10))){
+    else if(Number(startDateArr[2])==Number(localDateArr[2])){
       /*********** Compara el mes ingresado con el mes actual ****************/
-      if(Number(json.startDate.substring(3,5))>=Number(localDate.substring(3,5))){
+      if(Number(startDateArr[1])>=Number(localDateArr[1])){
         /*********** Compara el día ingresado con el día actual ****************/
-        if(Number(json.startDate.substring(0,2))>=Number(localDate.substring(0,2))){
+        if(Number(startDateArr[0])>=Number(localDateArr[0])){
           console.log("OK!");
         }
         else{
           validatePost=false;
-          alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
+          alert("No se pudo crear el torneo: La fecha no puede ser previa a la actual.");
         }
       }
       else{
         validatePost=false;
-        alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
+        alert("No se pudo crear el torneo: La fecha no puede ser previa a la actual.");
       }
     }
-
-    else{
+    else if(Number(startDateArr[2])<Number(localDateArr[2])){
       validatePost=false;
-      alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
-    }   
-    if(tournamentTeams.length<2){
+      alert("No se pudo crear el torneo: La fecha no puede ser previa a la actual.");
+    }
+    else if(tournamentTeams.length<2){
       validatePost=false
       alert("El torneo debe contar con mínimo 2 equipos")     
     }
-    if(tPhases[0]==''){
+    else if(tPhases[0]==''){
       validatePost=false
       alert("Debe agregar minímo una fase para el torneo")      
     }
+    
     if(validatePost){
       await axios.post('http://localhost:5000/createTournaments', json, { headers })
         .then(response =>{

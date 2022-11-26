@@ -201,6 +201,15 @@ export default function CreateMatch() {
       'Content-Type': 'application/json'
     }
 
+    let localDate = new Date().toLocaleDateString().split('/'); //Obtiene Fecha actual
+    let localTime = new Date().toTimeString().split(':'); //Obtiene Hora Actual
+    let jsonDate = json.date.split('/');
+    let jsonTime = json.time.split(':');
+    localTime[2] = localTime[2].substring(0,2);
+
+    console.log("JSON TIME", jsonTime);
+    console.log("LOCAL TIME", localTime);
+
     let validatePost=true;
     console.log("DATE:",json.date);
     if(json.date=="31/12/1969"){
@@ -208,20 +217,17 @@ export default function CreateMatch() {
       alert("No se pudo crear el partido: Debe ingresar una fecha para el partido.");
     }
 
-    let localDate = new Date().toLocaleDateString(); //Obtiene Fecha actual
-    let localTime = new Date().toTimeString(); //Obtiene Hora Actual
     /*********** Compara el año ingresado con el año actual ****************/
-    if(Number(json.date.substring(6,10))>=Number(localDate.substring(6,10))){
+    else if(Number(jsonDate[2])>=Number(localDate[2])){
       /*********** Compara el mes ingresado con el mes actual ****************/
-      if(Number(json.date.substring(3,5))>=Number(localDate.substring(3,5))){
+      if(Number(jsonDate[1])>=Number(localDate[1])){
         /*********** Compara el día ingresado con el día actual ****************/
-        if(Number(json.date.substring(0,2))>=Number(localDate.substring(0,2))){
+        if(Number(jsonDate[0])>=Number(localDate[0])){
           /*********** Compara la hora ingresado con la hora actual **************/
-          if((Number(json.date.substring(0,2))==Number(localDate.substring(0,2)))){
-            if(Number(json.time.substring(0,2))>=Number(localTime.substring(0,2))
-            || Number(json.time.substring(0,1))>=Number(localTime.substring(0,1))){
+          if((Number(jsonTime[0])==Number(localTime[0]))){
+            if(Number(jsonTime[1])>=Number(localTime[1])){
               /****** Compara los minutos ingresados con los minutos actuales ********/
-              if(Number(json.time.substring(3,5))>=Number(localTime.substring(3,5))){
+              if(Number(jsonTime[2])>=Number(localTime[2])){
                 console.log("OK!");
               }
               else{
@@ -233,6 +239,10 @@ export default function CreateMatch() {
               validatePost=false;
               alert("No se pudo crear el partido: La hora no puede ser previa a la actual.");
             }
+          }
+          else if(Number(jsonTime[0])<Number(localTime[0])){
+            validatePost=false;
+            alert("No se pudo crear el partido: La hora no puede ser previa a la actual.");
           }
         }
         else{
@@ -249,25 +259,24 @@ export default function CreateMatch() {
       validatePost=false;
       alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
     }
-
-    console.log("TIME:",json.time);
     if(json.time=="18:00:00" && !enteredDate){
       validatePost=false;
       alert("No se pudo crear el partido: Debe ingresar una hora para el partido.");
+    
     }
-    console.log("FASE:",json.fase);
-    if(json.fase==""){
+    else if(json._idTournament==""){
+      validatePost=false;
+      alert("No se pudo crear el partido: Debe escoger un torneo para el partido.");
+    }
+    else if(json.fase==""){
       validatePost=false;
       alert("No se pudo crear el partido: Debe ingresar una fase para el partido.");
     }
-    console.log("TEAM 1:",json.team1);
-    console.log("TEAM 2:",json.team2);
-    if(json.team1=="" || json.team2==""){
+    else if(json.team1=="" || json.team2==""){
       validatePost=false;
       alert("No se pudo crear el partido: Debe ingresar ambos equipos para el partido.");
     }
-    console.log("CAMPUS:",json.place);
-    if(json.place==""){
+    else if(json.place==""){
       validatePost=false;
       alert("No se pudo crear el partido: Debe ingresar una sede para el partido.");
     }
