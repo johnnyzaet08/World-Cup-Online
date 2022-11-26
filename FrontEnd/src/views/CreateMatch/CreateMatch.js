@@ -218,14 +218,14 @@ export default function CreateMatch() {
     }
 
     /*********** Compara el año ingresado con el año actual ****************/
-    else if(Number(jsonDate[2])>=Number(localDate[2])){
+    else if(Number(jsonDate[2])==Number(localDate[2])){
       /*********** Compara el mes ingresado con el mes actual ****************/
-      if(Number(jsonDate[1])>=Number(localDate[1])){
+      if(Number(jsonDate[1])==Number(localDate[1])){
         /*********** Compara el día ingresado con el día actual ****************/
-        if(Number(jsonDate[0])>=Number(localDate[0])){
+        if(Number(jsonDate[0])==Number(localDate[0])){
           /*********** Compara la hora ingresado con la hora actual **************/
           if((Number(jsonTime[0])==Number(localTime[0]))){
-            if(Number(jsonTime[1])>=Number(localTime[1])){
+            if(Number(jsonTime[1])==Number(localTime[1])){
               /****** Compara los minutos ingresados con los minutos actuales ********/
               if(Number(jsonTime[2])>=Number(localTime[2])){
                 console.log("OK!");
@@ -235,7 +235,7 @@ export default function CreateMatch() {
                 alert("No se pudo crear el partido: La hora no puede ser previa a la actual.");
               }
             }
-            else{
+            else if(Number(jsonTime[1])<Number(localTime[1])){
               validatePost=false;
               alert("No se pudo crear el partido: La hora no puede ser previa a la actual.");
             }
@@ -245,21 +245,21 @@ export default function CreateMatch() {
             alert("No se pudo crear el partido: La hora no puede ser previa a la actual.");
           }
         }
-        else{
+        else if(Number(jsonDate[0])<Number(localDate[0])){
           validatePost=false;
           alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
         }
       }
-      else{
+      else if(Number(jsonDate[1])<Number(localDate[1])){
         validatePost=false;
         alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
       }
     }
-    else{
+    else if(Number(jsonDate[2])<Number(localDate[2])){
       validatePost=false;
       alert("No se pudo crear el partido: La fecha no puede ser previa a la actual.");
     }
-    if(json.time=="18:00:00" && !enteredDate){
+    else if(json.time=="18:00:00" && !enteredDate){
       validatePost=false;
       alert("No se pudo crear el partido: Debe ingresar una hora para el partido.");
     
